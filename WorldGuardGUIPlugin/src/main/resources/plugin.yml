@@ -1,0 +1,7 @@
+name: WorldGuardGUIPlugin
+version: ${project.version}
+main: me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin
+api-version: 1.17
+depend:
+  - WorldGuard
+  - WorldEdit

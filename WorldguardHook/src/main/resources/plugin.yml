@@ -1,0 +1,4 @@
+name: WorldguardHook
+version: ${project.version}
+main: me.heymrau.worldguardhook.WorldguardHook
+api-version: 1.17

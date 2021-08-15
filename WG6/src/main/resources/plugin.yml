@@ -1,0 +1,4 @@
+name: WG6
+version: ${project.version}
+main: me.heymrau.wg6.WG6
+api-version: 1.17
