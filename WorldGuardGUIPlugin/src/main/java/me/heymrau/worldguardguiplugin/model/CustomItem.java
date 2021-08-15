@@ -1,4 +1,4 @@
-package me.heymrau.worldguardgui.model;
+package me.heymrau.worldguardguiplugin.model;
 
 
 import lombok.AllArgsConstructor;

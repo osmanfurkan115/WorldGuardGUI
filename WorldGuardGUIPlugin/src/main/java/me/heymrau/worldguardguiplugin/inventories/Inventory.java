@@ -1,4 +1,4 @@
-package me.heymrau.worldguardgui.inventories;
+package me.heymrau.worldguardguiplugin.inventories;
 
 import com.hakan.inventoryapi.inventory.HInventory;
 import org.bukkit.entity.Player;

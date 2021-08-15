@@ -1,4 +1,0 @@
-name: WorldGuardGUI
-version: ${project.version}
-main: me.heymrau.worldguardgui.WorldGuardGUI
-api-version: 1.17
