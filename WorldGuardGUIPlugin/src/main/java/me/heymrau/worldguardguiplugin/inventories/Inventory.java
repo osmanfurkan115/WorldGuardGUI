@@ -7,7 +7,7 @@ public abstract class Inventory {
 
     abstract void createInventory();
 
-    abstract public HInventory getInventory(String regionName);
+    abstract public HInventory getInventory(String regionName, Player player);
 
-    abstract public void open(Player player);
+    abstract public void open(Player player, String regionName);
 }

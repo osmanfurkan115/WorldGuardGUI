@@ -1,7 +1,13 @@
-name: WorldGuardGUIPlugin
+name: WorldGuardGUI
 version: ${project.version}
 main: me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin
 api-version: 1.17
 depend:
   - WorldGuard
   - WorldEdit
+commands:
+  wggui:
+    permission: worldguardgui.admin
+    aliases:
+      - worldguardgui
+      - wgui

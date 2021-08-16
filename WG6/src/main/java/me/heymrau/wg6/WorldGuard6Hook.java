@@ -19,10 +19,18 @@ public class WorldGuard6Hook implements WorldGuardService {
     public void remove(String regionName) {
         for (World world: Bukkit.getWorlds()) {
             final RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
-            final RegionManager regions = container.get(world);
-            if(regions == null) return;
-            regions.removeRegion(getRegionByName(regionName).getId());
+            final RegionManager regionManager = container.get(world);
+
+            ProtectedRegion region = getRegionByName(regionName);
+            if(regionManager != null && region != null) {
+                removeWg(region, regionManager);
+            }
         }
+
+    }
+    private void removeWg(ProtectedRegion region, RegionManager regionManager) {
+
+        regionManager.removeRegion(region.getId());
     }
 
     @Override
@@ -36,8 +44,26 @@ public class WorldGuard6Hook implements WorldGuardService {
     }
 
     @Override
-    public List<Flag> getFlags(String regionName) {
-        return new ArrayList<>(getRegionByName(regionName).getFlags().keySet());
+    public List<StateFlag> getEnabledFlags(String regionName) {
+        final ProtectedRegion regionByName = getRegionByName(regionName);
+
+        final List<StateFlag> collect =  new ArrayList<>();
+        for(Flag<?> flag: regionByName.getFlags().keySet()) {
+            if(flag instanceof StateFlag && regionByName.getFlags().get(flag).equals(StateFlag.State.ALLOW)) {
+                StateFlag toReturnFlag = (StateFlag) flag;
+                collect.add(toReturnFlag);
+            }
+        }
+        return collect;
+    }
+
+    @Override
+    public List<StateFlag> getAllFlags() {
+        List<Flag<?>> flags = new ArrayList<>();
+        WorldGuardPlugin.inst().getFlagRegistry().forEach(flags::add);
+        List<StateFlag> toReturnList = new ArrayList<>();
+        flags.stream().filter(flag -> flag instanceof StateFlag).forEach(flag -> toReturnList.add((StateFlag) flag));
+        return toReturnList;
     }
 
     @Override
@@ -45,8 +71,15 @@ public class WorldGuard6Hook implements WorldGuardService {
         for (World world: Bukkit.getWorlds()) {
             final RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
             final RegionManager regions = container.get(world);
-            return regions == null ? null : regions.getRegion(regionName);
+            if(regions != null &&  regions.getRegion(regionName) != null) return regions.getRegion(regionName);
         }
         return null;
     }
+
+    @Override
+    public StateFlag getFlagByName(String flagName) {
+        Flag<?> flag = WorldGuardPlugin.inst().getFlagRegistry().get(flagName);
+        return flag instanceof StateFlag ? (StateFlag) flag : null;
+    }
+
 }

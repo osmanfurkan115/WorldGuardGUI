@@ -2,10 +2,8 @@ package me.heymrau.worldguardguiplugin.inventories;
 
 import com.hakan.inventoryapi.inventory.ClickableItem;
 import com.hakan.inventoryapi.inventory.HInventory;
-import me.heymrau.wg6.WorldGuard6Hook;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
-import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -34,19 +32,16 @@ public class MainInventory extends Inventory {
     }
 
     @Override
-    public HInventory getInventory(String regionName) {
+    public HInventory getInventory(String regionName, Player player) {
         final ItemStack regionFlag = new CustomItem("&aManage region flags", null, Material.GRASS, true, (short) 0,1).complete();
         final ItemStack deleteRegion = new CustomItem("&cDelete region " + regionName, null, Material.BARRIER, false, (short) 0,1).complete();
-        inventory.setItem(0, ClickableItem.empty(regionFlag));
-        inventory.setItem(1, ClickableItem.of(deleteRegion, item -> {
-            WorldGuardService worldGuard = new WorldGuard6Hook();
-            worldGuard.remove(regionName);
-        }));
+        inventory.setItem(0, ClickableItem.of(regionFlag, item -> new FlagInventory(plugin, regionName).open(player,regionName)));
+        inventory.setItem(1, ClickableItem.of(deleteRegion, item -> plugin.getWorldGuard().remove(regionName)));
         return inventory;
     }
 
     @Override
-    public void open(Player player) {
-        getInventory("test").open(player);
+    public void open(Player player, String regionName) {
+        getInventory(regionName, player).open(player);
     }
 }

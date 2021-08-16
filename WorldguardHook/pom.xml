@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>WorldGuardGUI</artifactId>
+        <artifactId>WorldGuardGUIParent</artifactId>
         <groupId>me.heymrau</groupId>
         <version>1.0.0</version>
     </parent>
@@ -59,14 +59,6 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
 
         <repository>
             <id>sk89q-repo</id>
@@ -77,8 +69,8 @@
     <dependencies>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
-            <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.6-SNAPSHOT</version>
+            <artifactId>worldguard-legacy</artifactId>
+            <version>6.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

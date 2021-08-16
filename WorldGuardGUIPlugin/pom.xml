@@ -3,12 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <artifactId>WorldGuardGUIParent</artifactId>
         <groupId>me.heymrau</groupId>
         <version>1.0.0</version>
     </parent>
-    <artifactId>WorldGuardGUIPlugin</artifactId>
+
+
+    <artifactId>WorldGuardGUI</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -61,10 +64,6 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -72,6 +71,7 @@
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+
     </repositories>
 
     <dependencies>
@@ -88,6 +88,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>me.heymrau</groupId>
+            <artifactId>WG7</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.github.hakan-krgn</groupId>
             <artifactId>hInventoryAPI</artifactId>
             <version>1.0.6</version>
@@ -100,9 +106,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.8.3-R0.1-SNAPSHOT</version>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-legacy</artifactId>
+            <version>6.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>6.1.4-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cryptomorin</groupId>
+            <artifactId>XSeries</artifactId>
+            <version>8.3.0</version>
         </dependency>
     </dependencies>
 </project>

@@ -11,8 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Data
 public class CustomItem {
     private String name;
@@ -27,13 +27,34 @@ public class CustomItem {
 
     private int amount;
 
+    private ItemStack itemStack;
+
+    public CustomItem(String name, List<String> lore, Material material, boolean glow, short data, int amount) {
+        this.name = name;
+        this.lore = lore;
+        this.material = material;
+        this.glow = glow;
+        this.data = data;
+        this.amount = amount;
+    }
+
+    public CustomItem(String name, List<String> lore, ItemStack itemStack, boolean glow, short data, int amount) {
+        this.name = name;
+        this.lore = lore;
+        this.glow = glow;
+        this.data = data;
+        this.amount = amount;
+        this.itemStack = itemStack;
+    }
 
     public ItemStack complete() {
-        ItemStack returnItem = new ItemStack(getMaterial(), getAmount(), getData());
+        ItemStack returnItem = itemStack == null ? new ItemStack(getMaterial(), getAmount(), getData()) : itemStack;
 
         ItemMeta itemMeta = returnItem.getItemMeta();
         if (itemMeta != null) {
-            if(lore != null) itemMeta.setLore(getLore());
+            if(lore != null) {
+                itemMeta.setLore(lore.stream().map(line -> line = ChatColor.translateAlternateColorCodes('&', line)).collect(Collectors.toList()));
+            }
 
             itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.name));
 
