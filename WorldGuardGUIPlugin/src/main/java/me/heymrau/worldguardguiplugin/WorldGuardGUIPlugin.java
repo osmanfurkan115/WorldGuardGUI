@@ -26,6 +26,7 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
         final String version = Bukkit.getPluginManager().getPlugin("WorldGuard").getDescription().getVersion();
         worldGuard = version.startsWith("6") ? setupVariable(worldGuard, new WorldGuard6Hook()) : setupVariable(worldGuard, new WorldGuard7Hook());
         getCommand("wggui").setExecutor(new WGGuiCommand(this));
+        getLogger().info("WorldGuardGUI has started succesfully");
 
     }
 
