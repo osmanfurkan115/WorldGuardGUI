@@ -8,6 +8,7 @@ import me.heymrau.worldguardguiplugin.commands.WGGuiCommand;
 import me.heymrau.worldguardguiplugin.inventories.Inventory;
 import me.heymrau.worldguardguiplugin.inventories.MainInventory;
 import me.heymrau.worldguardhook.WorldGuardService;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,7 +27,8 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
         final String version = Bukkit.getPluginManager().getPlugin("WorldGuard").getDescription().getVersion();
         worldGuard = version.startsWith("6") ? setupVariable(worldGuard, new WorldGuard6Hook()) : setupVariable(worldGuard, new WorldGuard7Hook());
         getCommand("wggui").setExecutor(new WGGuiCommand(this));
-        getLogger().info("WorldGuardGUI has started succesfully");
+        final Metrics metrics = new Metrics(this,12471);
+        getLogger().info("WorldGuardGUI has started successfully");
 
     }
 
