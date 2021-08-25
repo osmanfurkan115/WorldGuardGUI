@@ -11,12 +11,11 @@ import me.heymrau.worldguardguiplugin.model.CustomItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class FlagInventory extends Inventory implements Listener {
+public class FlagInventory extends Inventory {
 
     private final WorldGuardGUIPlugin plugin;
     private final List<ClickableItem> clickableItemList = new ArrayList<>();
@@ -36,7 +35,6 @@ public class FlagInventory extends Inventory implements Listener {
         this.page = page;
     }
 
-    //Bad practice, I'll change it ASAP
     @Override
     void createInventory() {
         final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setId("flaginv").setTitle(ChatColor.GRAY + "Flag Management").create();
@@ -60,16 +58,9 @@ public class FlagInventory extends Inventory implements Listener {
                 if (equals) {
                     plugin.getWorldGuard().denyFlag(regionName, flagByName);
                     inventory.getInventory().setItem(flag.getSlot(), getDisabledItem(key));
-//                    inventory.setItem(flag.getSlot(), ClickableItem.empty(getDisabledItem(key)));
-
-//                    flag.setCurrentItem(getDisabledItem(key));
-
                 } else {
                     plugin.getWorldGuard().allowFlag(regionName, flagByName);
                     inventory.getInventory().setItem(flag.getSlot(), getEnabledItem(key));
-//                    inventory.setItem(flag.getSlot(), ClickableItem.empty(getEnabledItem(key)));
-
-//                    flag.setCurrentItem(getEnabledItem(key));
                 }
                 new FlagInventory(plugin, inventory.getPagination().getPage()).open(player,regionName);
             });
@@ -110,24 +101,6 @@ public class FlagInventory extends Inventory implements Listener {
         getInventory(regionName, player).open(player);
 
     }
-
-
-//    @EventHandler
-//    public void onClick(HInventoryClickEvent e) {
-//        if (!e.getInventory().getId().equals("flaginv")) return;
-//        e.setCancelled(true);
-//        ItemStack guiItem = e.getClickEvent().getCurrentItem();
-//        if (guiItem == null || !guiItem.hasItemMeta() || !guiItem.getItemMeta().hasDisplayName()) return;
-//
-//        final String flagName = ChatColor.stripColor(guiItem.getItemMeta().getDisplayName());
-//        if (guiItem.getItemMeta().getDisplayName().equals(ChatColor.GREEN + flagName)) {
-//            plugin.getWorldGuard().denyFlag(regionName, plugin.getWorldGuard().getFlagByName(flagName));
-//            e.getClickEvent().getInventory().setItem(e.getClickEvent().getSlot(), getDisabledItem(plugin.getWorldGuard().getFlagByName(flagName)));
-//        } else {
-//            plugin.getWorldGuard().allowFlag(regionName, plugin.getWorldGuard().getFlagByName(flagName));
-//            e.getClickEvent().getInventory().setItem(e.getClickEvent().getSlot(), getEnabledItem(plugin.getWorldGuard().getFlagByName(flagName)));
-//        }
-//        e.getInventory().open(e.getPlayer());
 }
 
 
