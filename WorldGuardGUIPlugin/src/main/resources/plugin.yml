@@ -1,8 +1,7 @@
 name: WorldGuardGUI
 version: ${project.version}
 main: me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin
-author: HeyMrau, KarmaXT
-website: discord.gg/86j4hCbKFF
+author: HeyMrau
 api-version: 1.13
 depend:
   - WorldGuard
