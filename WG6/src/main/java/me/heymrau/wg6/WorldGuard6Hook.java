@@ -12,6 +12,7 @@ import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class WorldGuard6Hook implements WorldGuardService {
 
@@ -44,6 +45,15 @@ public class WorldGuard6Hook implements WorldGuardService {
     }
 
     @Override
+    public void setParent(String childRegion, String parentRegion) {
+        try {
+            getRegionByName(childRegion).setParent(getRegionByName(parentRegion));
+        } catch (ProtectedRegion.CircularInheritanceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public List<StateFlag> getEnabledFlags(String regionName) {
         final ProtectedRegion regionByName = getRegionByName(regionName);
 
@@ -73,6 +83,14 @@ public class WorldGuard6Hook implements WorldGuardService {
             final RegionManager regions = container.get(world);
             if(regions != null &&  regions.getRegion(regionName) != null) return regions.getRegion(regionName);
         }
+        return null;
+    }
+
+    @Override
+    public Map<String, ProtectedRegion> getRegionsByWorld(String worldName) {
+        final RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
+        final RegionManager regions = container.get(Bukkit.getWorld(worldName));
+        if(regions != null) return regions.getRegions();
         return null;
     }
 
