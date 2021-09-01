@@ -1,6 +1,7 @@
 package me.heymrau.wg7;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
@@ -8,8 +9,10 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import me.heymrau.worldguardhook.WorldGuardLocation;
 import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.ArrayList;
@@ -72,6 +75,18 @@ public class WorldGuard7Hook implements WorldGuardService {
             regionManager.addRegion(newRegion);
             regionManager.removeRegion(region.getId());
         }
+    }
+
+    @Override
+    public WorldGuardLocation getMinimumPoint(ProtectedRegion region, String worldName) {
+        final BlockVector3 minimumPoint = region.getMinimumPoint();
+        return new WorldGuardLocation(worldName, minimumPoint.getBlockX(), minimumPoint.getBlockY(), minimumPoint.getBlockZ());
+    }
+
+    @Override
+    public WorldGuardLocation getMaximumPoint(ProtectedRegion region, String worldName) {
+        final BlockVector3 maximumPoint = region.getMaximumPoint();
+        return new WorldGuardLocation(worldName, maximumPoint.getBlockX(), maximumPoint.getBlockY(), maximumPoint.getBlockZ());
     }
 
     @Override

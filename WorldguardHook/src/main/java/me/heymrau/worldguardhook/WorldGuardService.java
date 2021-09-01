@@ -11,6 +11,8 @@ public interface WorldGuardService {
     void allowFlag(String regionName, StateFlag flag);
     void denyFlag(String regionName, StateFlag flag);
     void rename(String oldRegionName, String newRegionName);
+    WorldGuardLocation getMinimumPoint(ProtectedRegion region, String worldName);
+    WorldGuardLocation getMaximumPoint(ProtectedRegion region, String worldName);
     List<StateFlag> getAllFlags();
     List<StateFlag> getEnabledFlags(String regionName);
     ProtectedRegion getRegionByName(String regionName);
