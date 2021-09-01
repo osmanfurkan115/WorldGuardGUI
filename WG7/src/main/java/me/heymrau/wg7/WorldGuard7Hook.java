@@ -5,6 +5,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import me.heymrau.worldguardhook.WorldGuardService;
@@ -31,7 +32,6 @@ public class WorldGuard7Hook implements WorldGuardService {
 
     }
     private void removeWg(ProtectedRegion region, RegionManager regionManager) {
-
         regionManager.removeRegion(region.getId());
     }
 
@@ -45,12 +45,32 @@ public class WorldGuard7Hook implements WorldGuardService {
         getRegionByName(regionName).setFlag(flag, StateFlag.State.DENY);
     }
 
+
+    /*
+        setMembers(other.getMembers());
+        setOwners(other.getOwners());
+        setFlags(other.getFlags());
+        setPriority(other.getPriority());
+        setParent(other.getParent());
+     */
     @Override
-    public void setParent(String childRegion, String parentRegion) {
-        try {
-            getRegionByName(childRegion).setParent(getRegionByName(parentRegion));
-        } catch (ProtectedRegion.CircularInheritanceException e) {
-            e.printStackTrace();
+    public void rename(String oldRegionName, String newRegionName) {
+        ProtectedRegion region = getRegionByName(oldRegionName);
+        RegionManager regionManager = null;
+        for (World world: Bukkit.getWorlds()) {
+            final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+            regionManager = container.get(BukkitAdapter.adapt(world));
+
+
+            if(regionManager != null && region != null && regionManager.getRegions().containsKey(oldRegionName)) {
+                break;
+            }
+        }
+        ProtectedRegion newRegion = new ProtectedCuboidRegion(newRegionName, region.getMinimumPoint(), region.getMaximumPoint());
+        newRegion.copyFrom(region);
+        if (regionManager != null) {
+            regionManager.addRegion(newRegion);
+            regionManager.removeRegion(region.getId());
         }
     }
 

@@ -77,7 +77,6 @@
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
-
     </repositories>
 
     <dependencies>
@@ -102,9 +101,8 @@
         <dependency>
             <groupId>com.github.hakan-krgn</groupId>
             <artifactId>hInventoryAPI</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

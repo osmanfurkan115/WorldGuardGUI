@@ -10,7 +10,7 @@ public interface WorldGuardService {
     void remove(String regionName);
     void allowFlag(String regionName, StateFlag flag);
     void denyFlag(String regionName, StateFlag flag);
-    void setParent(String childRegion, String parentRegion);
+    void rename(String oldRegionName, String newRegionName);
     List<StateFlag> getAllFlags();
     List<StateFlag> getEnabledFlags(String regionName);
     ProtectedRegion getRegionByName(String regionName);

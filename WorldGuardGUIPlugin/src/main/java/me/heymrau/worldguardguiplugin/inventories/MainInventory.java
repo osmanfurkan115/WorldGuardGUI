@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 
@@ -38,6 +39,7 @@ public class MainInventory extends Inventory {
         final ItemStack regionFlag = new CustomItem("&aManage region flags", null, XMaterial.GRASS_BLOCK.parseMaterial(), false, (short) 0,1).complete();
         final ItemStack deleteRegion = new CustomItem("&cDelete region " + regionName, null, Material.BARRIER, false, (short) 0,1).complete();
         final ItemStack parent = new CustomItem("&aSet region parent", null, Material.ANVIL, false, (short) 0,1).complete();
+        final ItemStack rename = new CustomItem("&aRename region", Arrays.asList("&7", "&7Active name: &a" + regionName), Material.NAME_TAG, false, (short) 0,1).complete();
         inventory.setItem(11, ClickableItem.of(regionFlag, item -> new FlagInventory(plugin).open(player,regionName)));
         inventory.setItem(31, ClickableItem.of(deleteRegion, item -> {
             plugin.getWorldGuard().remove(regionName);
@@ -45,6 +47,19 @@ public class MainInventory extends Inventory {
             player.sendMessage(ChatColor.GREEN + "Region deleted succesfully");
         }));
         inventory.setItem(15, ClickableItem.of(parent, item -> new ParentInventory(plugin, regionName, player).open(player,regionName)));
+        inventory.setItem(13, ClickableItem.of(rename, item -> {
+            player.closeInventory();
+            player.sendMessage(ChatColor.YELLOW + "Type a new name for the region named " + regionName);
+            player.sendMessage(ChatColor.YELLOW + "You have 30 seconds");
+            plugin.getChatInput().put(player, regionName);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    plugin.getChatInput().remove(player);
+                    player.sendMessage(ChatColor.RED + "You didn't type any name in 30 seconds!");
+                }
+            }.runTaskLater(plugin, 20*30L);
+        }));
         return inventory;
     }
 

@@ -5,6 +5,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.Bukkit;
@@ -45,11 +46,23 @@ public class WorldGuard6Hook implements WorldGuardService {
     }
 
     @Override
-    public void setParent(String childRegion, String parentRegion) {
-        try {
-            getRegionByName(childRegion).setParent(getRegionByName(parentRegion));
-        } catch (ProtectedRegion.CircularInheritanceException e) {
-            e.printStackTrace();
+    public void rename(String oldRegionName, String newRegionName) {
+        ProtectedRegion region = getRegionByName(oldRegionName);
+        RegionManager regionManager = null;
+        for (World world: Bukkit.getWorlds()) {
+            final RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
+            regionManager = container.get(world);
+
+
+            if(regionManager != null && region != null && regionManager.getRegions().containsKey(oldRegionName)) {
+                break;
+            }
+        }
+        ProtectedRegion newRegion = new ProtectedCuboidRegion(newRegionName, region.getMinimumPoint(), region.getMaximumPoint());
+        newRegion.copyFrom(region);
+        if (regionManager != null) {
+            regionManager.addRegion(newRegion);
+            regionManager.removeRegion(region.getId());
         }
     }
 
