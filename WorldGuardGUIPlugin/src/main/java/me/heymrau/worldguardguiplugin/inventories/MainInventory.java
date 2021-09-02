@@ -85,8 +85,11 @@ public class MainInventory extends Inventory {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    plugin.getChatInput().remove(player);
-                    player.sendMessage(ChatColor.RED + "You didn't type any name in 30 seconds!");
+                    if(plugin.getChatInput().containsKey(player)) {
+                        plugin.getChatInput().remove(player);
+                        player.sendMessage(ChatColor.RED + "You didn't type any name in 30 seconds!");
+                    }
+
                 }
             }.runTaskLater(plugin, 20*30L);
         }));
