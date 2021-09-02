@@ -11,7 +11,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardhook.WorldGuardLocation;
 import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.ArrayList;
@@ -23,12 +22,12 @@ public class WorldGuard6Hook implements WorldGuardService {
     @Override
     public void remove(String regionName) {
         for (World world: Bukkit.getWorlds()) {
-            final RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
-            final RegionManager regionManager = container.get(world);
+            final RegionManager regionManager = WorldGuardPlugin.inst().getRegionContainer().get(world);
+            final ProtectedRegion region = getRegionByName(regionName);
 
-            ProtectedRegion region = getRegionByName(regionName);
             if(regionManager != null && region != null) {
                 removeWg(region, regionManager);
+                break;
             }
         }
 

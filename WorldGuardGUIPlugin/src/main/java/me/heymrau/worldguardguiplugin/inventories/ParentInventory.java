@@ -33,10 +33,8 @@ public class ParentInventory extends Inventory {
     }
 
     public ParentInventory(WorldGuardGUIPlugin plugin, String regionName, int page, Player player) {
-        this.plugin = plugin;
-        this.regionName = regionName;
+        this(plugin, regionName, player);
         this.page = page;
-        this.player = player;
     }
 
     @Override

@@ -30,8 +30,7 @@ public class FlagInventory extends Inventory {
     }
 
     public FlagInventory(WorldGuardGUIPlugin plugin, int page) {
-        this.plugin = plugin;
-        allFlags = new HashSet<>(plugin.getWorldGuard().getAllFlags());
+        this(plugin);
         this.page = page;
     }
 

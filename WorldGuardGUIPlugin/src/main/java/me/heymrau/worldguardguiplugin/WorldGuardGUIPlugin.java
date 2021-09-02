@@ -24,8 +24,8 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
     private Inventory mainInventory;
     private WorldGuardService worldGuard;
 
-    //Key: Player
-    //Value: Region name
+    /* Key: Player
+    Value: Region name */
     private final Map<Player, String> chatInput = new HashMap<>();
 
 
@@ -37,7 +37,7 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
         worldGuard = version.startsWith("6") ? setupVariable(worldGuard, new WorldGuard6Hook()) : setupVariable(worldGuard, new WorldGuard7Hook());
         getCommand("wggui").setExecutor(new WGGuiCommand(this));
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
-        final Metrics metrics = new Metrics(this, 12471);
+        new Metrics(this, 12471);
         getLogger().info("WorldGuardGUI has started successfully");
 
     }

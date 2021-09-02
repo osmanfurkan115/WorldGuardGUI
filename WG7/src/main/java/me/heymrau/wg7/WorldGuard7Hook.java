@@ -24,12 +24,12 @@ public class WorldGuard7Hook implements WorldGuardService {
     @Override
     public void remove(String regionName) {
         for (World world: Bukkit.getWorlds()) {
-            final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-            final RegionManager regionManager = container.get(BukkitAdapter.adapt(world));
+            final RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
 
-            ProtectedRegion region = getRegionByName(regionName);
+            final ProtectedRegion region = getRegionByName(regionName);
             if(regionManager != null && region != null) {
                 removeWg(region, regionManager);
+                break;
             }
         }
 

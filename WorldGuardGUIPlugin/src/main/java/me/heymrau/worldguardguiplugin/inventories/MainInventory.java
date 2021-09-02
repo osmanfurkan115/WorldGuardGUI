@@ -75,22 +75,7 @@ public class MainInventory extends Inventory {
                     }
                 }
             });
-            List<Object> packets = new ArrayList<>();
-            ParticleBuilder particle = new ParticleBuilder(ParticleEffect.FLAME).setAmount(1).setOffsetY(1f).setSpeed(0f);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    blocks.forEach(block -> packets.add(particle.setLocation(block.getLocation()).toPacket()));
-                }
-            }.runTaskLaterAsynchronously(plugin, 20L);
-            int id = TaskManager.startSingularTask(packets, 5, player);
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    TaskManager.getTaskManager().stopTask(id);
-                }
-            }.runTaskLater(plugin, 15*20L);
+            showParticles(player, blocks);
         }));
         inventory.setItem(15, ClickableItem.of(rename, item -> {
             player.closeInventory();
@@ -111,6 +96,25 @@ public class MainInventory extends Inventory {
             player.sendMessage(ChatColor.GREEN + "Region deleted succesfully");
         }));
         return inventory;
+    }
+
+    private void showParticles(Player player, List<Block> blocks) {
+        List<Object> packets = new ArrayList<>();
+        ParticleBuilder particle = new ParticleBuilder(ParticleEffect.FLAME).setAmount(1).setOffsetY(1f).setSpeed(0f);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                blocks.forEach(block -> packets.add(particle.setLocation(block.getLocation()).toPacket()));
+            }
+        }.runTaskLaterAsynchronously(plugin, 20L);
+        int id = TaskManager.startSingularTask(packets, 5, player);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                TaskManager.getTaskManager().stopTask(id);
+            }
+        }.runTaskLater(plugin, 15*20L);
     }
 
     @Override
