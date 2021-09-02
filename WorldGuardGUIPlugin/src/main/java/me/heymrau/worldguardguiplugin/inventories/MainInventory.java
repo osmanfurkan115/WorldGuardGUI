@@ -3,7 +3,6 @@ package me.heymrau.worldguardguiplugin.inventories;
 import com.cryptomorin.xseries.XMaterial;
 import com.hakan.inventoryapi.inventory.ClickableItem;
 import com.hakan.inventoryapi.inventory.HInventory;
-import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
