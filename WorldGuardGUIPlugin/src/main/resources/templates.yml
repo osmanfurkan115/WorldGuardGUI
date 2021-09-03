@@ -1,0 +1,10 @@
+templates:
+  spawn:
+    allowed-flags:
+      - 'invincible'
+    denied-flags:
+      - 'pvp'
+      - 'other-explosion'
+      - 'mob-spawning'
+      - 'interact'
+      - 'creeper-explosion'

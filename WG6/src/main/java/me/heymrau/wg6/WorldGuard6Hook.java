@@ -38,13 +38,13 @@ public class WorldGuard6Hook implements WorldGuardService {
     }
 
     @Override
-    public void allowFlag(String regionName, StateFlag flag) {
-        getRegionByName(regionName).setFlag(flag, StateFlag.State.ALLOW);
+    public void allowFlag(ProtectedRegion region, StateFlag flag) {
+        region.setFlag(flag, StateFlag.State.ALLOW);
     }
 
     @Override
-    public void denyFlag(String regionName, StateFlag flag) {
-        getRegionByName(regionName).setFlag(flag, StateFlag.State.DENY);
+    public void denyFlag(ProtectedRegion region, StateFlag flag) {
+        region.setFlag(flag, StateFlag.State.DENY);
     }
 
     @Override
@@ -81,12 +81,22 @@ public class WorldGuard6Hook implements WorldGuardService {
     }
 
     @Override
-    public List<StateFlag> getEnabledFlags(String regionName) {
-        final ProtectedRegion regionByName = getRegionByName(regionName);
+    public List<StateFlag> getEnabledFlags(ProtectedRegion region) {
 
         final List<StateFlag> collect =  new ArrayList<>();
-        for(Flag<?> flag: regionByName.getFlags().keySet()) {
-            if(flag instanceof StateFlag && regionByName.getFlags().get(flag).equals(StateFlag.State.ALLOW)) {
+        for(Flag<?> flag: region.getFlags().keySet()) {
+            if(flag instanceof StateFlag && region.getFlags().get(flag).equals(StateFlag.State.ALLOW)) {
+                StateFlag toReturnFlag = (StateFlag) flag;
+                collect.add(toReturnFlag);
+            }
+        }
+        return collect;
+    }
+    @Override
+    public List<StateFlag> getDeniedFlags(ProtectedRegion region) {
+        final List<StateFlag> collect =  new ArrayList<>();
+        for(Flag<?> flag: region.getFlags().keySet()) {
+            if(flag instanceof StateFlag && region.getFlags().get(flag).equals(StateFlag.State.DENY)) {
                 StateFlag toReturnFlag = (StateFlag) flag;
                 collect.add(toReturnFlag);
             }

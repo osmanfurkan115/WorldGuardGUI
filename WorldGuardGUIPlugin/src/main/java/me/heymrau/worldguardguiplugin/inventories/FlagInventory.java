@@ -6,6 +6,7 @@ import com.hakan.inventoryapi.inventory.HInventory;
 import com.hakan.inventoryapi.inventory.Pagination;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import org.bukkit.ChatColor;
@@ -43,18 +44,18 @@ public class FlagInventory extends Inventory {
 
 
         for (StateFlag key : allFlags) {
-
-            final boolean equals = plugin.getWorldGuard().getEnabledFlags(regionName).contains(key);
+            ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
+            final boolean equals = plugin.getWorldGuard().getEnabledFlags(region).contains(key);
             final ItemStack item = equals ? getEnabledItem(key) : getDisabledItem(key);
 
             final ClickableItem clickableItem = ClickableItem.of(item, flag -> {
                 Player player = (Player) flag.getWhoClicked();
                 final StateFlag flagByName = plugin.getWorldGuard().getFlagByName(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
                 if (equals) {
-                    plugin.getWorldGuard().denyFlag(regionName, flagByName);
+                    plugin.getWorldGuard().denyFlag(region, flagByName);
                     inventory.getInventory().setItem(flag.getSlot(), getDisabledItem(key));
                 } else {
-                    plugin.getWorldGuard().allowFlag(regionName, flagByName);
+                    plugin.getWorldGuard().allowFlag(region, flagByName);
                     inventory.getInventory().setItem(flag.getSlot(), getEnabledItem(key));
                 }
                 new FlagInventory(plugin, inventory.getPagination().getPage()).open(player,regionName);

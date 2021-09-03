@@ -3,9 +3,11 @@ package me.heymrau.worldguardguiplugin.inventories;
 import com.cryptomorin.xseries.XMaterial;
 import com.hakan.inventoryapi.inventory.ClickableItem;
 import com.hakan.inventoryapi.inventory.HInventory;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
+import me.heymrau.worldguardguiplugin.model.Template;
 import me.heymrau.worldguardhook.WorldGuardLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,9 +37,9 @@ public class MainInventory extends Inventory {
 
     @Override
     void createInventory() {
-        final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(4).setTitle("WorldGuard GUI").create();
+        final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setTitle("WorldGuard GUI").create();
         final ItemStack info = new CustomItem("&eAbout plugin", Arrays.asList("&7", "&7You can manage your", "&7flags and can set", "&7their value to &aALLOW", "&7or &cDENY &7easily"), Material.BOOK, false, (short) 0,1).complete();
-        inventory.setItem(35, ClickableItem.empty(info));
+        inventory.setItem(44, ClickableItem.empty(info));
 
         this.inventory = inventory;
 
@@ -50,11 +52,14 @@ public class MainInventory extends Inventory {
         final ItemStack parent = new CustomItem("&aSet region parent", null, Material.ANVIL, false, (short) 0,1).complete();
         final ItemStack rename = new CustomItem("&aRename region", Arrays.asList("&7", "&7Active name: &a" + regionName), Material.NAME_TAG, false, (short) 0,1).complete();
         final ItemStack border = new CustomItem("&aShow border", null, XMaterial.BLUE_DYE.parseItem(), false, (short) 0,1).complete();
+        final ItemStack template = new CustomItem("&aTemplates", null, XMaterial.CLOCK.parseItem(), false, (short) 0,1).complete();
+        final ItemStack saveAsTemplate = new CustomItem("&aSave as template", null, XMaterial.GOLD_INGOT.parseItem(), false, (short) 0,1).complete();
         inventory.setItem(11, ClickableItem.of(regionFlag, item -> new FlagInventory(plugin).open(player,regionName)));
         inventory.setItem(12, ClickableItem.of(parent, item -> new ParentInventory(plugin, regionName, player).open(player,regionName)));
+        inventory.setItem(13, ClickableItem.of(template, item -> new TemplateInventory(plugin,regionName,player).open(player,regionName)));
+        final ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
         inventory.setItem(14, ClickableItem.of(border, item -> {
             player.sendMessage(ChatColor.YELLOW + "Border displayed for 15 seconds");
-            ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
             final WorldGuardLocation minimumPoint1 = plugin.getWorldGuard().getMinimumPoint(region, player.getWorld().getName());
             final Location minimumPoint = new Location(Bukkit.getWorld(minimumPoint1.getWorldName()), minimumPoint1.getX(), minimumPoint1.getY(), minimumPoint1.getZ());
             final WorldGuardLocation maximumPoint1 = plugin.getWorldGuard().getMaximumPoint(region, player.getWorld().getName());
@@ -93,7 +98,12 @@ public class MainInventory extends Inventory {
                 }
             }.runTaskLater(plugin, 20*30L);
         }));
-        inventory.setItem(31, ClickableItem.of(deleteRegion, item -> {
+        inventory.setItem(22, ClickableItem.of(saveAsTemplate, item -> {
+
+            Template templateModel = new Template(regionName, plugin.getWorldGuard().getEnabledFlags(region), plugin.getWorldGuard().getDeniedFlags(region));
+            plugin.getTemplateManager().addTemplate(templateModel);
+        }));
+        inventory.setItem(40, ClickableItem.of(deleteRegion, item -> {
             plugin.getWorldGuard().remove(regionName);
             player.closeInventory();
             player.sendMessage(ChatColor.GREEN + "Region deleted succesfully");

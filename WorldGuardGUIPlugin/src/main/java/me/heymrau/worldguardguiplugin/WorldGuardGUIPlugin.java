@@ -8,6 +8,8 @@ import me.heymrau.worldguardguiplugin.commands.WGGuiCommand;
 import me.heymrau.worldguardguiplugin.inventories.Inventory;
 import me.heymrau.worldguardguiplugin.inventories.MainInventory;
 import me.heymrau.worldguardguiplugin.listeners.ChatListener;
+import me.heymrau.worldguardguiplugin.managers.TemplateManager;
+import me.heymrau.worldguardguiplugin.utils.Yaml;
 import me.heymrau.worldguardhook.WorldGuardService;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -23,6 +25,9 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
     private InventoryAPI inventoryAPI;
     private Inventory mainInventory;
     private WorldGuardService worldGuard;
+    private TemplateManager templateManager;
+
+    private Yaml templates;
 
     /* Key: Player
     Value: Region name */
@@ -31,13 +36,22 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        templates = new Yaml(getDataFolder() + "/templates.yml", "templates.yml");
+
         inventoryAPI = InventoryAPI.getInstance(this);
+
+
         mainInventory = setupVariable(mainInventory, new MainInventory(this));
+
         final String version = Bukkit.getPluginManager().getPlugin("WorldGuard").getDescription().getVersion();
         worldGuard = version.startsWith("6") ? setupVariable(worldGuard, new WorldGuard6Hook()) : setupVariable(worldGuard, new WorldGuard7Hook());
+        templateManager = new TemplateManager(this);
+        templateManager.initializeTemplates();
+
         getCommand("wggui").setExecutor(new WGGuiCommand(this));
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         new Metrics(this, 12471);
+
         getLogger().info("WorldGuardGUI has started successfully");
 
     }

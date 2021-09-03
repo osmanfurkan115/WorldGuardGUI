@@ -8,13 +8,14 @@ import java.util.Map;
 
 public interface WorldGuardService {
     void remove(String regionName);
-    void allowFlag(String regionName, StateFlag flag);
-    void denyFlag(String regionName, StateFlag flag);
+    void allowFlag(ProtectedRegion region, StateFlag flag);
+    void denyFlag(ProtectedRegion region, StateFlag flag);
     void rename(String oldRegionName, String newRegionName);
     WorldGuardLocation getMinimumPoint(ProtectedRegion region, String worldName);
     WorldGuardLocation getMaximumPoint(ProtectedRegion region, String worldName);
     List<StateFlag> getAllFlags();
-    List<StateFlag> getEnabledFlags(String regionName);
+    List<StateFlag> getEnabledFlags(ProtectedRegion regionName);
+    List<StateFlag> getDeniedFlags(ProtectedRegion region);
     ProtectedRegion getRegionByName(String regionName);
     Map<String, ProtectedRegion> getRegionsByWorld(String worldName);
     StateFlag getFlagByName(String flagName);
