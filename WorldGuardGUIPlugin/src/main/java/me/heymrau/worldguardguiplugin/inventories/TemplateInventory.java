@@ -34,20 +34,7 @@ public class TemplateInventory extends Inventory {
         int i = 0;
         for(Template template: plugin.getTemplateManager().getTemplatesList()) {
             if(i<=35) {
-                List<String> lore = new ArrayList<>();
-                lore.add("&7");
-                lore.add("&7Allowed Flags:");
-                template.getEnabledFlags().forEach(flag -> {
-                    if(flag != null) lore.add(" &8- &a" + flag.getName());
-                });
-                lore.add("&7");
-                lore.add("&7Denied Flags:");
-                template.getDeniedFlags().forEach(flag -> {
-                    if(flag != null) lore.add(" &8- &c" + flag.getName());
-                });
-                lore.add("&7");
-                lore.add("&eClick to set as template");
-
+                List<String> lore = getLore(template);
                 ItemStack itemStack = new CustomItem("&e" + template.getName(), lore, XMaterial.GRASS_BLOCK.parseMaterial(), false, (short) 0,1).complete();
                 inventory.setItem(i, ClickableItem.of(itemStack, event -> {
                     ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
@@ -68,6 +55,23 @@ public class TemplateInventory extends Inventory {
         }
         inventory.setItem(40, ClickableItem.of(new CustomItem("&cClose", null, Material.BARRIER, false, (short) 0, 1).complete(), (event) -> event.getWhoClicked().closeInventory()));
         this.inventory = inventory;
+    }
+
+    private List<String> getLore(Template template) {
+        List<String> lore = new ArrayList<>();
+        lore.add("&7");
+        lore.add("&7Allowed Flags:");
+        template.getEnabledFlags().forEach(flag -> {
+            if(flag != null) lore.add(" &8- &a" + flag.getName());
+        });
+        lore.add("&7");
+        lore.add("&7Denied Flags:");
+        template.getDeniedFlags().forEach(flag -> {
+            if(flag != null) lore.add(" &8- &c" + flag.getName());
+        });
+        lore.add("&7");
+        lore.add("&eClick to set as template");
+        return lore;
     }
 
     @Override

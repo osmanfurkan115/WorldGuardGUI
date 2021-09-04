@@ -15,19 +15,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter @Setter
+@Getter
 public class CustomItem {
-    private String name;
+    private final String name;
 
-    private List<String> lore;
+    private final List<String> lore;
 
     private Material material;
 
-    private boolean glow;
+    private final boolean glow;
 
-    private short data;
+    private final short data;
 
-    private int amount;
+    private final int amount;
 
     private ItemStack itemStack;
 

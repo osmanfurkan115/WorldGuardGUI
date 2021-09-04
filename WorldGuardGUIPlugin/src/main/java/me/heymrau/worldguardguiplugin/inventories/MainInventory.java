@@ -47,16 +47,12 @@ public class MainInventory extends Inventory {
 
     @Override
     public HInventory getInventory(String regionName, Player player) {
-        final ItemStack regionFlag = new CustomItem("&aManage region flags", null, XMaterial.GRASS_BLOCK.parseMaterial(), false, (short) 0,1).complete();
-        final ItemStack deleteRegion = new CustomItem("&cDelete region " + regionName, null, Material.BARRIER, false, (short) 0,1).complete();
-        final ItemStack parent = new CustomItem("&aSet region parent", null, Material.ANVIL, false, (short) 0,1).complete();
         final ItemStack rename = new CustomItem("&aRename region", Arrays.asList("&7", "&7Active name: &a" + regionName), Material.NAME_TAG, false, (short) 0,1).complete();
         final ItemStack border = new CustomItem("&aShow border", null, XMaterial.BLUE_DYE.parseItem(), false, (short) 0,1).complete();
-        final ItemStack template = new CustomItem("&aTemplates", null, XMaterial.CLOCK.parseItem(), false, (short) 0,1).complete();
         final ItemStack saveAsTemplate = new CustomItem("&aSave as template", null, XMaterial.GOLD_INGOT.parseItem(), false, (short) 0,1).complete();
-        inventory.setItem(11, ClickableItem.of(regionFlag, item -> new FlagInventory(plugin).open(player,regionName)));
-        inventory.setItem(12, ClickableItem.of(parent, item -> new ParentInventory(plugin, regionName, player).open(player,regionName)));
-        inventory.setItem(13, ClickableItem.of(template, item -> new TemplateInventory(plugin,regionName,player).open(player,regionName)));
+        inventory.setItem(11, ClickableItem.of(new CustomItem("&aManage region flags", null, XMaterial.GRASS_BLOCK.parseMaterial(), false, (short) 0,1).complete(), item -> new FlagInventory(plugin).open(player,regionName)));
+        inventory.setItem(12, ClickableItem.of(new CustomItem("&aSet region parent", null, Material.ANVIL, false, (short) 0,1).complete(), item -> new ParentInventory(plugin, regionName, player).open(player,regionName)));
+        inventory.setItem(13, ClickableItem.of(new CustomItem("&aTemplates", null, XMaterial.CLOCK.parseItem(), false, (short) 0,1).complete(), item -> new TemplateInventory(plugin,regionName,player).open(player,regionName)));
         final ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
         inventory.setItem(14, ClickableItem.of(border, item -> {
             player.sendMessage(ChatColor.YELLOW + "Border displayed for 15 seconds");
@@ -65,6 +61,7 @@ public class MainInventory extends Inventory {
             final WorldGuardLocation maximumPoint1 = plugin.getWorldGuard().getMaximumPoint(region, player.getWorld().getName());
             final Location maximumPoint = new Location(Bukkit.getWorld(maximumPoint1.getWorldName()), maximumPoint1.getX(), maximumPoint1.getY(), maximumPoint1.getZ());;
             final List<Block> blocks = new ArrayList<>();
+
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 for(int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); ++x) {
                     for(int y = minimumPoint.getBlockY(); y <= maximumPoint.getBlockY(); ++y) {
@@ -82,6 +79,7 @@ public class MainInventory extends Inventory {
             });
             showParticles(player, blocks);
         }));
+
         inventory.setItem(15, ClickableItem.of(rename, item -> {
             player.closeInventory();
             player.sendMessage(ChatColor.YELLOW + "Type a new name for the region named " + regionName);
@@ -98,12 +96,12 @@ public class MainInventory extends Inventory {
                 }
             }.runTaskLater(plugin, 20*30L);
         }));
-        inventory.setItem(22, ClickableItem.of(saveAsTemplate, item -> {
 
-            Template templateModel = new Template(regionName, plugin.getWorldGuard().getEnabledFlags(region), plugin.getWorldGuard().getDeniedFlags(region));
-            plugin.getTemplateManager().addTemplate(templateModel);
+        inventory.setItem(22, ClickableItem.of(saveAsTemplate, item -> {
+            plugin.getTemplateManager().addTemplate(new Template(regionName, plugin.getWorldGuard().getEnabledFlags(region), plugin.getWorldGuard().getDeniedFlags(region)));
         }));
-        inventory.setItem(40, ClickableItem.of(deleteRegion, item -> {
+
+        inventory.setItem(40, ClickableItem.of(new CustomItem("&cDelete region " + regionName, null, Material.BARRIER, false, (short) 0,1).complete(), item -> {
             plugin.getWorldGuard().remove(regionName);
             player.closeInventory();
             player.sendMessage(ChatColor.GREEN + "Region deleted succesfully");

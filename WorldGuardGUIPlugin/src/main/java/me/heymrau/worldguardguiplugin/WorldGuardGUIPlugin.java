@@ -56,11 +56,6 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
 
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
-
     private <T> T setupVariable(T variable, T instance) {
         if(variable == null) {
             return instance;

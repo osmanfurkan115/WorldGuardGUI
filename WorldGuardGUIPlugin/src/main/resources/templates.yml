@@ -8,3 +8,4 @@ templates:
       - 'mob-spawning'
       - 'interact'
       - 'creeper-explosion'
+      - 'enderpearl'
