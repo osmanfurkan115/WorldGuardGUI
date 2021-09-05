@@ -25,11 +25,10 @@ public class WorldGuard7Hook implements WorldGuardService {
     public void remove(String regionName) {
         for (World world: Bukkit.getWorlds()) {
             final RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
-
             final ProtectedRegion region = getRegionByName(regionName);
+
             if(regionManager != null && region != null) {
                 removeWg(region, regionManager);
-                break;
             }
         }
 

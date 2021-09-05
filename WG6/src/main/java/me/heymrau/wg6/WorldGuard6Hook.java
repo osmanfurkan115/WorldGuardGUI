@@ -27,13 +27,11 @@ public class WorldGuard6Hook implements WorldGuardService {
 
             if(regionManager != null && region != null) {
                 removeWg(region, regionManager);
-                break;
             }
         }
 
     }
     private void removeWg(ProtectedRegion region, RegionManager regionManager) {
-
         regionManager.removeRegion(region.getId());
     }
 
