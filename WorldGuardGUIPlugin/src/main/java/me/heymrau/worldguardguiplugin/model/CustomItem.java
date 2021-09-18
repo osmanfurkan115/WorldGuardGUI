@@ -1,10 +1,7 @@
 package me.heymrau.worldguardguiplugin.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -20,15 +17,10 @@ public class CustomItem {
     private final String name;
 
     private final List<String> lore;
-
-    private Material material;
-
     private final boolean glow;
-
     private final short data;
-
     private final int amount;
-
+    private Material material;
     private ItemStack itemStack;
 
     public CustomItem(String name, List<String> lore, Material material, boolean glow, short data, int amount) {
@@ -54,7 +46,7 @@ public class CustomItem {
 
         ItemMeta itemMeta = returnItem.getItemMeta();
         if (itemMeta != null) {
-            if(lore != null) {
+            if (lore != null) {
                 itemMeta.setLore(lore.stream().map(line -> line = ChatColor.translateAlternateColorCodes('&', line)).collect(Collectors.toList()));
             }
 

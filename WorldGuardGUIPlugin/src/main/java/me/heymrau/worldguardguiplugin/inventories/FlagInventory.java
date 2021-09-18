@@ -12,6 +12,7 @@ import me.heymrau.worldguardguiplugin.model.CustomItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -51,13 +52,7 @@ public class FlagInventory extends Inventory {
             final ClickableItem clickableItem = ClickableItem.of(item, flag -> {
                 Player player = (Player) flag.getWhoClicked();
                 final StateFlag flagByName = plugin.getWorldGuard().getFlagByName(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
-                if (equals) {
-                    plugin.getWorldGuard().denyFlag(region, flagByName);
-                    inventory.getInventory().setItem(flag.getSlot(), getDisabledItem(key));
-                } else {
-                    plugin.getWorldGuard().allowFlag(region, flagByName);
-                    inventory.getInventory().setItem(flag.getSlot(), getEnabledItem(key));
-                }
+                if(equals) denyFlag(region, flagByName, inventory, key, flag); else allowFlag(inventory, key, region, flag, flagByName);
                 new FlagInventory(plugin, inventory.getPagination().getPage()).open(player,regionName);
             });
 
@@ -75,6 +70,16 @@ public class FlagInventory extends Inventory {
         if(page != 0)  pagination.setPage(page);
         this.inventory = inventory;
 
+    }
+
+    private void allowFlag(HInventory inventory, StateFlag key, ProtectedRegion region, InventoryClickEvent flag, StateFlag flagByName) {
+        plugin.getWorldGuard().allowFlag(region, flagByName);
+        inventory.getInventory().setItem(flag.getSlot(), getEnabledItem(key));
+    }
+
+    private void denyFlag(ProtectedRegion region, StateFlag flagByName, HInventory inventory, StateFlag key, InventoryClickEvent flag) {
+        plugin.getWorldGuard().denyFlag(region, flagByName);
+        inventory.getInventory().setItem(flag.getSlot(), getDisabledItem(key));
     }
 
     private ItemStack getEnabledItem(Flag<?> key) {

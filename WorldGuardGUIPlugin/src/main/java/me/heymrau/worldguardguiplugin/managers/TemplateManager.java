@@ -22,13 +22,11 @@ public class TemplateManager {
 
     public void addTemplate(Template template) {
         final Yaml templates = plugin.getTemplates();
-        List<String> allowedFlags = template.getEnabledFlags().stream().map(Flag::getName).collect(Collectors.toList());
-        List<String> deniedFlags = template.getDeniedFlags().stream().map(Flag::getName).collect(Collectors.toList());
-        templates.set("templates." + template.getName() + ".allowed-flags", allowedFlags);
-        templates.set("templates." + template.getName() + ".denied-flags", deniedFlags);
+        templates.set("templates." + template.getName() + ".allowed-flags", template.getEnabledFlags().stream().map(Flag::getName).collect(Collectors.toList()));
+        templates.set("templates." + template.getName() + ".denied-flags", template.getDeniedFlags().stream().map(Flag::getName).collect(Collectors.toList()));
         templates.save();
         final Optional<Template> first = templatesList.stream().filter(template1 -> template1.getName().equals(template.getName())).findFirst();
-        if(first.isPresent()) templatesList.set(templatesList.indexOf(first.get()), template);
+        if (first.isPresent()) templatesList.set(templatesList.indexOf(first.get()), template);
         else templatesList.add(template);
 
 
@@ -36,9 +34,7 @@ public class TemplateManager {
 
     public void initializeTemplates() {
         plugin.getTemplates().getConfigurationSection("templates").getKeys(false).forEach(template -> {
-            List<StateFlag> enabledFlags = getFlags(template, "allowed-flags");
-            List<StateFlag> deniedFlags = getFlags(template, "denied-flags");
-            Template templateModel = new Template(template, enabledFlags, deniedFlags);
+            Template templateModel = new Template(template, getFlags(template, "allowed-flags"), getFlags(template, "denied-flags"));
             templatesList.add(templateModel);
         });
 

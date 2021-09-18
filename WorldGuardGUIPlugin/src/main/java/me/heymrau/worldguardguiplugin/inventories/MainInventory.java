@@ -98,7 +98,7 @@ public class MainInventory extends Inventory {
         inventory.setItem(40, ClickableItem.of(new CustomItem("&cDelete region " + regionName, null, Material.BARRIER, false, (short) 0, 1).complete(), item -> {
             plugin.getWorldGuard().remove(regionName);
             player.closeInventory();
-            player.sendMessage(ChatColor.GREEN + "Region deleted succesfully");
+            player.sendMessage(ChatColor.GREEN + "Region deleted successfully");
         }));
         return inventory;
     }
