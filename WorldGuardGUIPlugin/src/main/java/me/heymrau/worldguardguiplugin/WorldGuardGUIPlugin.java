@@ -57,10 +57,7 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
     }
 
     private <T> T setupVariable(T variable, T instance) {
-        if(variable == null) {
-            return instance;
-        }
-        return variable;
+        return variable == null ? instance : variable;
     }
 
 }
