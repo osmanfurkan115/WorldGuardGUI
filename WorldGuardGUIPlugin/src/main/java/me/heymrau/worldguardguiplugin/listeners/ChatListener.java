@@ -17,7 +17,7 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
-        if(plugin.getChatInput().containsKey(player)) {
+        if (plugin.getChatInput().containsKey(player)) {
             plugin.getWorldGuard().rename(plugin.getChatInput().get(player), e.getMessage());
             player.sendMessage(ChatColor.GREEN + "Region name changed to " + e.getMessage());
             plugin.getChatInput().remove(player);

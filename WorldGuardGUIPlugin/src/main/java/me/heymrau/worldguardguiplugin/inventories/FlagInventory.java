@@ -52,8 +52,9 @@ public class FlagInventory extends Inventory {
             final ClickableItem clickableItem = ClickableItem.of(item, flag -> {
                 Player player = (Player) flag.getWhoClicked();
                 final StateFlag flagByName = plugin.getWorldGuard().getFlagByName(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
-                if(equals) denyFlag(region, flagByName, inventory, key, flag); else allowFlag(inventory, key, region, flag, flagByName);
-                new FlagInventory(plugin, inventory.getPagination().getPage()).open(player,regionName);
+                if (equals) denyFlag(region, flagByName, inventory, key, flag);
+                else allowFlag(inventory, key, region, flag, flagByName);
+                new FlagInventory(plugin, inventory.getPagination().getPage()).open(player, regionName);
             });
 
 
@@ -62,15 +63,13 @@ public class FlagInventory extends Inventory {
 
 
         pagination.setItems(clickableItemList);
-        inventory.setItem(38, ClickableItem.of(new CustomItem("&6Previous Page", null, Material.ARROW, false, (short) 0, 1).complete(), (event) -> pagination.previousPage()));
-
-        inventory.setItem(40, ClickableItem.of(new CustomItem("&cClose", null, Material.BARRIER, false, (short) 0, 1).complete(), (event) -> event.getWhoClicked().closeInventory()));
-
-        inventory.setItem(42, ClickableItem.of(new CustomItem("&6Next Page", null, Material.ARROW, false, (short) 0, 1).complete(), (event) -> pagination.nextPage()));
-        if(page != 0)  pagination.setPage(page);
+        plugin.setupButtons(inventory, pagination);
+        if (page != 0) pagination.setPage(page);
         this.inventory = inventory;
 
     }
+
+
 
     private void allowFlag(HInventory inventory, StateFlag key, ProtectedRegion region, InventoryClickEvent flag, StateFlag flagByName) {
         plugin.getWorldGuard().allowFlag(region, flagByName);

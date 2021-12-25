@@ -63,7 +63,7 @@ public class MainInventory extends Inventory {
 
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 for (int y = minimumPoint.getBlockY(); y <= maximumPoint.getBlockY(); ++y) {
-                    for(int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); ++x) {
+                    for (int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); ++x) {
                         blocks.add(player.getWorld().getBlockAt(x, y, minimumPoint.getBlockZ()));
                         blocks.add(player.getWorld().getBlockAt(x, y, maximumPoint.getBlockZ()));
                     }

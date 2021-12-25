@@ -72,11 +72,7 @@ public class ParentInventory extends Inventory {
         }
 
         pagination.setItems(clickableItemList);
-        inventory.setItem(38, ClickableItem.of(new CustomItem("&6Previous Page", null, Material.ARROW, false, (short) 0, 1).complete(), (event) -> pagination.previousPage()));
-
-        inventory.setItem(40, ClickableItem.of(new CustomItem("&cClose", null, Material.BARRIER, false, (short) 0, 1).complete(), (event) -> event.getWhoClicked().closeInventory()));
-
-        inventory.setItem(42, ClickableItem.of(new CustomItem("&6Next Page", null, Material.ARROW, false, (short) 0, 1).complete(), (event) -> pagination.nextPage()));
+        plugin.setupButtons(inventory, pagination);
         if(page != 0)  pagination.setPage(page);
         this.inventory = inventory;
     }
