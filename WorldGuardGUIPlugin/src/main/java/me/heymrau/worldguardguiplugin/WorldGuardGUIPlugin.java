@@ -11,6 +11,7 @@ import me.heymrau.worldguardguiplugin.commands.WGGuiCommand;
 import me.heymrau.worldguardguiplugin.inventories.Inventory;
 import me.heymrau.worldguardguiplugin.inventories.MainInventory;
 import me.heymrau.worldguardguiplugin.listeners.ChatListener;
+import me.heymrau.worldguardguiplugin.managers.InventoryManager;
 import me.heymrau.worldguardguiplugin.managers.TemplateManager;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import me.heymrau.worldguardguiplugin.utils.Yaml;
@@ -34,6 +35,7 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
     private Inventory mainInventory;
     private WorldGuardService worldGuard;
     private TemplateManager templateManager;
+    private InventoryManager inventoryManager;
     private Yaml templates;
 
     @Override
@@ -49,6 +51,7 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
         worldGuard = version.startsWith("6") ? setupVariable(worldGuard, new WorldGuard6Hook()) : setupVariable(worldGuard, new WorldGuard7Hook());
         templateManager = new TemplateManager(this);
         templateManager.initializeTemplates();
+        inventoryManager = new InventoryManager(this);
 
         getCommand("wggui").setExecutor(new WGGuiCommand(this));
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
@@ -62,11 +65,5 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
         return variable == null ? instance : variable;
     }
 
-    public void setupButtons(HInventory inventory, Pagination pagination) {
-        inventory.setItem(38, ClickableItem.of(new CustomItem("&6Previous Page", null, Material.ARROW, false, (short) 0, 1).complete(), (event) -> pagination.previousPage()));
 
-        inventory.setItem(40, ClickableItem.of(new CustomItem("&cClose", null, Material.BARRIER, false, (short) 0, 1).complete(), (event) -> event.getWhoClicked().closeInventory()));
-
-        inventory.setItem(42, ClickableItem.of(new CustomItem("&6Next Page", null, Material.ARROW, false, (short) 0, 1).complete(), (event) -> pagination.nextPage()));
-    }
 }

@@ -40,10 +40,8 @@ public class ParentInventory extends Inventory {
     @Override
     void createInventory() {
         final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setTitle(ChatColor.GRAY + "Parent Management").create();
-        inventory.guiAir();
         Pagination pagination = inventory.getPagination();
-        pagination.setItemSlots(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35));
-
+        plugin.getInventoryManager().setupInventory(inventory, pagination);
         final Map<String, ProtectedRegion> regionsByWorld = plugin.getWorldGuard().getRegionsByWorld(player.getWorld().getName());
 
         for(Map.Entry<String, ProtectedRegion> regions: regionsByWorld.entrySet()) {
@@ -72,7 +70,7 @@ public class ParentInventory extends Inventory {
         }
 
         pagination.setItems(clickableItemList);
-        plugin.setupButtons(inventory, pagination);
+        plugin.getInventoryManager().setupButtons(inventory, pagination);
         if(page != 0)  pagination.setPage(page);
         this.inventory = inventory;
     }
