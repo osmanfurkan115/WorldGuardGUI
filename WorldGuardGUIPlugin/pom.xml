@@ -12,7 +12,7 @@
 
 
     <artifactId>WorldGuardGUI</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <packaging>jar</packaging>
 
     <name>WorldGuardGUIPlugin</name>
@@ -129,7 +129,7 @@
         <dependency>
             <groupId>xyz.xenondevs</groupId>
             <artifactId>particle</artifactId>
-            <version>1.6.4</version>
+            <version>1.7</version>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
