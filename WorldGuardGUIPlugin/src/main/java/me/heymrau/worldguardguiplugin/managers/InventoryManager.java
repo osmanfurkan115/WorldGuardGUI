@@ -3,17 +3,12 @@ package me.heymrau.worldguardguiplugin.managers;
 import com.hakan.inventoryapi.inventory.ClickableItem;
 import com.hakan.inventoryapi.inventory.HInventory;
 import com.hakan.inventoryapi.inventory.Pagination;
-import lombok.RequiredArgsConstructor;
-import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import org.bukkit.Material;
 
 import java.util.Arrays;
 
-@RequiredArgsConstructor
 public class InventoryManager {
-    private final WorldGuardGUIPlugin plugin;
-
     public void setupButtons(HInventory inventory, Pagination pagination) {
         inventory.setItem(38, ClickableItem.of(new CustomItem("&6Previous Page", null, Material.ARROW, false, (short) 0, 1).complete(), (event) -> pagination.previousPage()));
 

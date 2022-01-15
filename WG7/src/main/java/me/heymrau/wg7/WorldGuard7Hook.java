@@ -12,7 +12,6 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import me.heymrau.worldguardhook.WorldGuardLocation;
 import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.ArrayList;
