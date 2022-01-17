@@ -4,6 +4,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
@@ -14,9 +15,7 @@ import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WorldGuard7Hook implements WorldGuardService {
 
@@ -46,14 +45,6 @@ public class WorldGuard7Hook implements WorldGuardService {
         region.setFlag(flag, StateFlag.State.DENY);
     }
 
-
-    /*
-        setMembers(other.getMembers());
-        setOwners(other.getOwners());
-        setFlags(other.getFlags());
-        setPriority(other.getPriority());
-        setParent(other.getParent());
-     */
     @Override
     public void rename(String oldRegionName, String newRegionName) {
         ProtectedRegion region = getRegionByName(oldRegionName);
@@ -112,6 +103,28 @@ public class WorldGuard7Hook implements WorldGuardService {
     }
 
     @Override
+    public Set<String> getBlockedCommands(ProtectedRegion region) {
+        final Set<String> flag = region.getFlag(Flags.BLOCKED_CMDS);
+        return flag != null ? flag : new HashSet<>();
+    }
+
+    @Override
+    public void addBlockedCommand(ProtectedRegion region, String command) {
+        final Set<String> flag = region.getFlag(Flags.BLOCKED_CMDS);
+        if(flag == null) return;
+        flag.add(command);
+        region.setFlag(Flags.BLOCKED_CMDS, flag);
+    }
+
+    @Override
+    public void removeBlockedCommand(ProtectedRegion region, String command) {
+        final Set<String> flag = region.getFlag(Flags.BLOCKED_CMDS);
+        if(flag == null) return;
+        flag.remove(command);
+        region.setFlag(Flags.BLOCKED_CMDS, flag);
+    }
+
+    @Override
     public List<StateFlag> getAllFlags() {
         List<Flag<?>> flags = new ArrayList<>();
         WorldGuard.getInstance().getFlagRegistry().forEach(flags::add);
@@ -143,5 +156,4 @@ public class WorldGuard7Hook implements WorldGuardService {
         Flag<?> flag = WorldGuard.getInstance().getFlagRegistry().get(flagName);
         return flag instanceof StateFlag ? (StateFlag) flag : null;
     }
-
 }

@@ -49,6 +49,7 @@ public class MainInventory extends Inventory {
         final ItemStack rename = new CustomItem("&aRename region", Arrays.asList("&7", "&7Active name: &a" + regionName), Material.NAME_TAG, false, (short) 0, 1).complete();
         final ItemStack border = new CustomItem("&aShow border", null, XMaterial.BLUE_DYE.parseItem(), false, (short) 0, 1).complete();
         final ItemStack saveAsTemplate = new CustomItem("&aSave as template", null, XMaterial.GOLD_INGOT.parseItem(), false, (short) 0, 1).complete();
+        final ItemStack blockedCommands = new CustomItem("&aBlocked Commands", null, XMaterial.CAULDRON.parseItem(), false, (short) 0, 1).complete();
         inventory.setItem(11, ClickableItem.of(new CustomItem("&aManage region flags", null, XMaterial.GRASS_BLOCK.parseMaterial(), false, (short) 0, 1).complete(), item -> new FlagInventory(plugin).open(player, regionName)));
         inventory.setItem(12, ClickableItem.of(new CustomItem("&aSet region parent", null, Material.ANVIL, false, (short) 0, 1).complete(), item -> new ParentInventory(plugin, regionName, player).open(player, regionName)));
         inventory.setItem(13, ClickableItem.of(new CustomItem("&aTemplates", null, XMaterial.CLOCK.parseItem(), false, (short) 0, 1).complete(), item -> new TemplateInventory(plugin, regionName, player).open(player, regionName)));
@@ -93,7 +94,10 @@ public class MainInventory extends Inventory {
             }.runTaskLater(plugin, 20 * 30L);
         }));
 
-        inventory.setItem(22, ClickableItem.of(saveAsTemplate, item -> plugin.getTemplateManager().addTemplate(new Template(regionName, plugin.getWorldGuard().getEnabledFlags(region), plugin.getWorldGuard().getDeniedFlags(region)))));
+        inventory.setItem(21, ClickableItem.of(saveAsTemplate, item -> plugin.getTemplateManager().addTemplate(new Template(regionName, plugin.getWorldGuard().getEnabledFlags(region), plugin.getWorldGuard().getDeniedFlags(region)))));
+
+        inventory.setItem(23, ClickableItem.of(blockedCommands, event -> new CommandInventory(plugin, player, regionName).open(player, regionName)));
+
 
         inventory.setItem(40, ClickableItem.of(new CustomItem("&cDelete region " + regionName, null, Material.BARRIER, false, (short) 0, 1).complete(), item -> {
             plugin.getWorldGuard().remove(regionName);

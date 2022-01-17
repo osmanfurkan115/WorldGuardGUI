@@ -5,6 +5,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface WorldGuardService {
     void remove(String regionName);
@@ -19,4 +20,8 @@ public interface WorldGuardService {
     ProtectedRegion getRegionByName(String regionName);
     Map<String, ProtectedRegion> getRegionsByWorld(String worldName);
     StateFlag getFlagByName(String flagName);
+    Set<String> getBlockedCommands(ProtectedRegion region);
+    void addBlockedCommand(ProtectedRegion region, String command);
+    void removeBlockedCommand(ProtectedRegion region, String command);
+
 }

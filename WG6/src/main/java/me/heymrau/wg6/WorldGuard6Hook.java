@@ -3,8 +3,7 @@ package me.heymrau.wg6;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.*;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -13,9 +12,7 @@ import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WorldGuard6Hook implements WorldGuardService {
 
@@ -103,6 +100,28 @@ public class WorldGuard6Hook implements WorldGuardService {
     }
 
     @Override
+    public Set<String> getBlockedCommands(ProtectedRegion region) {
+        final Set<String> flag = region.getFlag(DefaultFlag.BLOCKED_CMDS);
+        return flag != null ? flag : new HashSet<>();
+    }
+
+    @Override
+    public void addBlockedCommand(ProtectedRegion region, String command) {
+        final Set<String> flag = region.getFlag(DefaultFlag.BLOCKED_CMDS);
+        if(flag == null) return;
+        flag.add(command);
+        region.setFlag(DefaultFlag.BLOCKED_CMDS, flag);
+    }
+
+    @Override
+    public void removeBlockedCommand(ProtectedRegion region, String command) {
+        final Set<String> flag = region.getFlag(DefaultFlag.BLOCKED_CMDS);
+        if(flag == null) return;
+        flag.remove(command);
+        region.setFlag(DefaultFlag.BLOCKED_CMDS, flag);
+    }
+
+    @Override
     public List<StateFlag> getAllFlags() {
         List<Flag<?>> flags = new ArrayList<>();
         WorldGuardPlugin.inst().getFlagRegistry().forEach(flags::add);
@@ -131,8 +150,12 @@ public class WorldGuard6Hook implements WorldGuardService {
 
     @Override
     public StateFlag getFlagByName(String flagName) {
-        Flag<?> flag = WorldGuardPlugin.inst().getFlagRegistry().get(flagName);
+        Flag<?> flag = getFlag(flagName);
         return flag instanceof StateFlag ? (StateFlag) flag : null;
+    }
+
+    private Flag<?> getFlag(String flagName) {
+        return WorldGuardPlugin.inst().getFlagRegistry().get(flagName);
     }
 
 }
