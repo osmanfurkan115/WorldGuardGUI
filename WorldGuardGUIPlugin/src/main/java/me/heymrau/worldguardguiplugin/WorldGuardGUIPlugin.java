@@ -10,6 +10,7 @@ import me.heymrau.worldguardguiplugin.inventories.MainInventory;
 import me.heymrau.worldguardguiplugin.listeners.ChatListener;
 import me.heymrau.worldguardguiplugin.managers.InventoryManager;
 import me.heymrau.worldguardguiplugin.managers.TemplateManager;
+import me.heymrau.worldguardguiplugin.model.ChatInput;
 import me.heymrau.worldguardguiplugin.utils.Metrics;
 import me.heymrau.worldguardguiplugin.utils.Yaml;
 import me.heymrau.worldguardhook.WorldGuardService;
@@ -25,7 +26,7 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
 
     /* Key: Player
     Value: Region name */
-    private final Map<Player, String> chatInput = new HashMap<>();
+    private final Map<Player, ChatInput> chatInput = new HashMap<>();
     private InventoryAPI inventoryAPI;
     private Inventory mainInventory;
     private WorldGuardService worldGuard;

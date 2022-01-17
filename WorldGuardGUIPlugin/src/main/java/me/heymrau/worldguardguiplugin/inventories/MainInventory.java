@@ -5,7 +5,9 @@ import com.hakan.inventoryapi.inventory.ClickableItem;
 import com.hakan.inventoryapi.inventory.HInventory;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
+import me.heymrau.worldguardguiplugin.model.ChatInput;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
+import me.heymrau.worldguardguiplugin.model.InputType;
 import me.heymrau.worldguardguiplugin.model.Template;
 import me.heymrau.worldguardhook.WorldGuardLocation;
 import org.bukkit.Bukkit;
@@ -81,7 +83,7 @@ public class MainInventory extends Inventory {
             player.closeInventory();
             player.sendMessage(ChatColor.YELLOW + "Type a new name for the region named " + regionName);
             player.sendMessage(ChatColor.YELLOW + "You have 30 seconds");
-            plugin.getChatInput().put(player, regionName);
+            plugin.getChatInput().put(player, new ChatInput(regionName, InputType.NAME));
             new BukkitRunnable() {
                 @Override
                 public void run() {
