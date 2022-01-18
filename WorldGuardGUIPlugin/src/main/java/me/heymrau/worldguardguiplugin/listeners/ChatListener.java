@@ -29,6 +29,8 @@ public class ChatListener implements Listener {
                 case COMMAND:
                     plugin.getWorldGuard().addBlockedCommand(plugin.getWorldGuard().getRegionByName(chatInput.getRegionName()), e.getMessage());
                     player.sendMessage(ChatColor.GREEN + "Command " + e.getMessage() + " added to the blocked commands");
+                    break;
+                default:
             }
             plugin.getChatInput().remove(player);
         }
