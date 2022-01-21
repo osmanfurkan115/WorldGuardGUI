@@ -1,6 +1,5 @@
 package me.heymrau.worldguardguiplugin.inventories;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.hakan.inventoryapi.inventory.ClickableItem;
 import com.hakan.inventoryapi.inventory.HInventory;
 import com.sk89q.worldguard.protection.flags.Flag;
@@ -10,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import me.heymrau.worldguardguiplugin.model.Template;
+import me.heymrau.worldguardguiplugin.utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

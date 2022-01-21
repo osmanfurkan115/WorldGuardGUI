@@ -1,6 +1,5 @@
 package me.heymrau.worldguardguiplugin.inventories;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.hakan.inventoryapi.inventory.ClickableItem;
 import com.hakan.inventoryapi.inventory.HInventory;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -9,6 +8,7 @@ import me.heymrau.worldguardguiplugin.model.ChatInput;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import me.heymrau.worldguardguiplugin.model.InputType;
 import me.heymrau.worldguardguiplugin.model.Template;
+import me.heymrau.worldguardguiplugin.utils.XMaterial;
 import me.heymrau.worldguardhook.WorldGuardLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
