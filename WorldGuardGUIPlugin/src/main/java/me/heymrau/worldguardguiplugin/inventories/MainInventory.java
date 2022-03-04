@@ -4,9 +4,8 @@ import com.hakan.inventoryapi.inventory.ClickableItem;
 import com.hakan.inventoryapi.inventory.HInventory;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
-import me.heymrau.worldguardguiplugin.model.ChatInput;
+import me.heymrau.worldguardguiplugin.chat.RegionNamePrompt;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
-import me.heymrau.worldguardguiplugin.model.InputType;
 import me.heymrau.worldguardguiplugin.model.Template;
 import me.heymrau.worldguardguiplugin.utils.XMaterial;
 import me.heymrau.worldguardhook.WorldGuardLocation;
@@ -15,25 +14,28 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import xyz.xenondevs.particle.ParticleBuilder;
-import xyz.xenondevs.particle.ParticleEffect;
-import xyz.xenondevs.particle.task.TaskManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainInventory extends Inventory {
 
     private final WorldGuardGUIPlugin plugin;
+    private final ConversationFactory nameConversationFactory;
     private HInventory inventory;
 
     public MainInventory(WorldGuardGUIPlugin plugin) {
         this.plugin = plugin;
         createInventory();
+        nameConversationFactory = new ConversationFactory(plugin)
+                .withLocalEcho(false)
+                .withFirstPrompt(new RegionNamePrompt(plugin.getWorldGuard()))
+                .withTimeout(30);
     }
 
     @Override
@@ -76,24 +78,12 @@ public class MainInventory extends Inventory {
                     }
                 }
             });
-            showParticles(player, blocks);
+            plugin.getParticleManager().showParticles(player, blocks);
         }));
 
         inventory.setItem(15, ClickableItem.of(rename, item -> {
             player.closeInventory();
-            player.sendMessage(ChatColor.YELLOW + "Type a new name for the region named " + regionName);
-            player.sendMessage(ChatColor.YELLOW + "You have 30 seconds");
-            plugin.getChatInput().put(player, new ChatInput(regionName, InputType.NAME));
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (plugin.getChatInput().containsKey(player)) {
-                        plugin.getChatInput().remove(player);
-                        player.sendMessage(ChatColor.RED + "You didn't type any name in 30 seconds!");
-                    }
-
-                }
-            }.runTaskLater(plugin, 20 * 30L);
+            beginNameChangeConversation(regionName, player);
         }));
 
         inventory.setItem(21, ClickableItem.of(saveAsTemplate, item -> plugin.getTemplateManager().addTemplate(new Template(regionName, plugin.getWorldGuard().getEnabledFlags(region), plugin.getWorldGuard().getDeniedFlags(region)))));
@@ -109,23 +99,11 @@ public class MainInventory extends Inventory {
         return inventory;
     }
 
-    private void showParticles(Player player, List<Block> blocks) {
-        List<Object> packets = new ArrayList<>();
-        ParticleBuilder particle = new ParticleBuilder(ParticleEffect.FLAME).setAmount(1).setOffsetY(1f).setSpeed(0f);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                blocks.forEach(block -> packets.add(particle.setLocation(block.getLocation()).toPacket()));
-            }
-        }.runTaskLaterAsynchronously(plugin, 20L);
-        int id = TaskManager.startSingularTask(packets, 20, player);
+    private void beginNameChangeConversation(String regionName, Player player) {
+        final HashMap<Object, Object> dataMap = new HashMap<>();
+        dataMap.put("regionName", regionName);
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                TaskManager.getTaskManager().stopTask(id);
-            }
-        }.runTaskLater(plugin, 15 * 20L);
+        nameConversationFactory.withInitialSessionData(dataMap).buildConversation(player).begin();
     }
 
     @Override
