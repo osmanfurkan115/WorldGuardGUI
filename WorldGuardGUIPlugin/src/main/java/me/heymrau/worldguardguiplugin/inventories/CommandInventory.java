@@ -31,16 +31,16 @@ public class CommandInventory extends Inventory {
         commandConversationFactory = new ConversationFactory(plugin)
                 .withLocalEcho(false)
                 .withFirstPrompt(new BlockedCommandPrompt(plugin.getWorldGuard()))
-                .withTimeout(30);
+                .withTimeout(30)
+                .withEscapeSequence("cancel");
     }
 
     @Override
     void createInventory() {
-
-
         final ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
         final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setTitle(ChatColor.GRAY + "Blocked Commands").create();
         inventory.guiAir();
+
         int i = 0;
         for (String command : plugin.getWorldGuard().getBlockedCommands(region)) {
             if (i <= 35) {
@@ -55,6 +55,7 @@ public class CommandInventory extends Inventory {
             }
             i++;
         }
+
         inventory.setItem(40, ClickableItem.of(new CustomItem("&cClose", null, Material.BARRIER, false, (short) 0, 1).complete(), (event) -> event.getWhoClicked().closeInventory()));
         inventory.setItem(43, ClickableItem.of(new CustomItem("&aAdd Blocked Command", null, XMaterial.GREEN_WOOL.parseItem(), false, (short) 0, 1).complete(), (event) -> {
             player.closeInventory();

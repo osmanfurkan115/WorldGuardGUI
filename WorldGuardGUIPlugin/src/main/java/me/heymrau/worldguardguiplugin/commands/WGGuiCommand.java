@@ -16,19 +16,16 @@ public class WGGuiCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(sender instanceof Player && sender.hasPermission("worldguardgui.admin")) {
-            Player player = (Player) sender;
-
-            if(args.length == 1) {
-                if(plugin.getWorldGuard().getRegionByName(args[0]) != null) {
-                    plugin.getMainInventory().open(player, args[0]);
-                }else {
-                    player.sendMessage(colored("&cCouldn't find a region named " + args[0]));
-                }
-            }else {
-                player.sendMessage(colored("&cUsage: &a/wggui <region>"));
+        if (!(sender instanceof Player) || !sender.hasPermission("worldguardgui.admin")) return true;
+        Player player = (Player) sender;
+        if (args.length == 1) {
+            if (plugin.getWorldGuard().getRegionByName(args[0]) != null) {
+                plugin.getMainInventory().open(player, args[0]);
+            } else {
+                player.sendMessage(colored("&cCouldn't find a region named " + args[0]));
             }
-
+        } else {
+            player.sendMessage(colored("&cUsage: &a/wggui <region>"));
         }
         return true;
     }

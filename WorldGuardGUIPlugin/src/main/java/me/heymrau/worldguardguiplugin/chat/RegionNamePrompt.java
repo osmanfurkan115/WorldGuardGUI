@@ -20,7 +20,7 @@ public class RegionNamePrompt extends StringPrompt {
     @Override
     public Prompt acceptInput(ConversationContext context, String input) {
         worldGuardService.rename(context.getSessionData("regionName").toString(), input);
-        context.getForWhom().sendRawMessage(ChatColor.GREEN + "Region name changed to " + input);
+        context.getForWhom().sendRawMessage(ChatColor.GREEN + "Region name is changed to " + input);
         return Prompt.END_OF_CONVERSATION;
     }
 }

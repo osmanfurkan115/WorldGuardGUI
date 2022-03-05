@@ -35,8 +35,8 @@ public class TemplateInventory extends Inventory {
         int i = 0;
         for (Template template : plugin.getTemplateManager().getTemplatesList()) {
             if (i <= 35) {
-                List<String> lore = getLore(template);
-                ItemStack itemStack = new CustomItem("&e" + template.getName(), lore, XMaterial.GRASS_BLOCK.parseMaterial(), false, (short) 0, 1).complete();
+                final List<String> lore = getLore(template);
+                final ItemStack itemStack = new CustomItem("&e" + template.getName(), lore, XMaterial.GRASS_BLOCK.parseMaterial(), false, (short) 0, 1).complete();
                 inventory.setItem(i, ClickableItem.of(itemStack, event -> {
                     ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
                     final HashMap<Flag<?>, Object> flags = new HashMap<>();

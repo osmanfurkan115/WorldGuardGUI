@@ -20,7 +20,7 @@ public class BlockedCommandPrompt extends StringPrompt {
     public Prompt acceptInput(ConversationContext context, String input) {
         worldGuardService.addBlockedCommand(worldGuardService.getRegionByName(context.getSessionData("regionName").toString()),
                 input);
-        context.getForWhom().sendRawMessage(ChatColor.GREEN + "Command " + input + " added to the blocked commands");
+        context.getForWhom().sendRawMessage(ChatColor.GREEN + "Command " + input + " is added to the blocked commands");
         return Prompt.END_OF_CONVERSATION;
     }
 }

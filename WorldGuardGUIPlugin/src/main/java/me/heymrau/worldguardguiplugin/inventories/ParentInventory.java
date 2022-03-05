@@ -69,7 +69,7 @@ public class ParentInventory extends Inventory {
         }
 
         pagination.setItems(clickableItemList);
-        plugin.getInventoryManager().setupButtons(inventory, pagination);
+        plugin.getInventoryManager().setupPageButtons(inventory, pagination);
         if(page != 0)  pagination.setPage(page);
         this.inventory = inventory;
     }
