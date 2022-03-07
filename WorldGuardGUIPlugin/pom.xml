@@ -118,7 +118,7 @@
         <dependency>
             <groupId>xyz.xenondevs</groupId>
             <artifactId>particle</artifactId>
-            <version>1.7</version>
+            <version>1.7.1</version>
         </dependency>
     </dependencies>
 </project>
