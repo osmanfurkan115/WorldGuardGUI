@@ -21,15 +21,27 @@ import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class TemplateInventory extends Inventory {
+public class TemplateInventory {
     private final WorldGuardGUIPlugin plugin;
-    private final String regionName;
-    private final Player player;
 
-    private HInventory inventory;
+    private List<String> getLore(Template template) {
+        final List<String> lore = new ArrayList<>();
+        lore.add("&7");
+        lore.add("&7Allowed Flags:");
+        template.getEnabledFlags().forEach(flag -> {
+            if (flag != null) lore.add(" &8- &a" + flag.getName());
+        });
+        lore.add("&7");
+        lore.add("&7Denied Flags:");
+        template.getDeniedFlags().forEach(flag -> {
+            if (flag != null) lore.add(" &8- &c" + flag.getName());
+        });
+        lore.add("&7");
+        lore.add("&eClick to set as template");
+        return lore;
+    }
 
-    @Override
-    void createInventory() {
+    public void open(Player player, String regionName) {
         final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setTitle(ChatColor.GRAY + "Template Management").create();
         inventory.guiAir();
         int i = 0;
@@ -51,34 +63,6 @@ public class TemplateInventory extends Inventory {
             i++;
         }
         inventory.setItem(40, ClickableItem.of(new CustomItem("&cClose", null, Material.BARRIER, false, (short) 0, 1).complete(), (event) -> event.getWhoClicked().closeInventory()));
-        this.inventory = inventory;
-    }
-
-    private List<String> getLore(Template template) {
-        List<String> lore = new ArrayList<>();
-        lore.add("&7");
-        lore.add("&7Allowed Flags:");
-        template.getEnabledFlags().forEach(flag -> {
-            if (flag != null) lore.add(" &8- &a" + flag.getName());
-        });
-        lore.add("&7");
-        lore.add("&7Denied Flags:");
-        template.getDeniedFlags().forEach(flag -> {
-            if (flag != null) lore.add(" &8- &c" + flag.getName());
-        });
-        lore.add("&7");
-        lore.add("&eClick to set as template");
-        return lore;
-    }
-
-    @Override
-    public HInventory getInventory(String regionName, Player player) {
-        return this.inventory;
-    }
-
-    @Override
-    public void open(Player player, String regionName) {
-        createInventory();
-        getInventory(regionName, player).open(player);
+        inventory.open(player);
     }
 }

@@ -16,14 +16,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class FlagInventory extends Inventory {
+public class FlagInventory {
 
     private final WorldGuardGUIPlugin plugin;
     private final List<ClickableItem> clickableItemList = new ArrayList<>();
     private final Set<StateFlag> allFlags;
     private int page;
-    private String regionName;
-    private HInventory inventory;
 
     public FlagInventory(WorldGuardGUIPlugin plugin) {
         this.plugin = plugin;
@@ -34,39 +32,6 @@ public class FlagInventory extends Inventory {
         this(plugin);
         this.page = page;
     }
-
-    @Override
-    void createInventory() {
-        final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setId("flaginv").setTitle(ChatColor.GRAY + "Flag Management").create();
-        Pagination pagination = inventory.getPagination();
-        plugin.getInventoryManager().setupInventory(inventory, pagination);
-        for (StateFlag key : allFlags) {
-            ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
-            final boolean equals = plugin.getWorldGuard().getEnabledFlags(region).contains(key);
-            final ItemStack item = equals ? getEnabledItem(key) : getDisabledItem(key);
-
-            final ClickableItem clickableItem = ClickableItem.of(item, flag -> {
-                Player player = (Player) flag.getWhoClicked();
-                final StateFlag flagByName = plugin.getWorldGuard().getFlagByName(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
-                if (equals) denyFlag(region, flagByName, inventory, key, flag);
-                else allowFlag(inventory, key, region, flag, flagByName);
-                new FlagInventory(plugin, inventory.getPagination().getPage()).open(player, regionName);
-            });
-
-
-            clickableItemList.add(clickableItem);
-        }
-
-
-        pagination.setItems(clickableItemList);
-        plugin.getInventoryManager().setupPageButtons(inventory, pagination);
-        if (page != 0) pagination.setPage(page);
-        this.inventory = inventory;
-
-    }
-
-
-
 
     private void allowFlag(HInventory inventory, StateFlag key, ProtectedRegion region, InventoryClickEvent flag, StateFlag flagByName) {
         plugin.getWorldGuard().allowFlag(region, flagByName);
@@ -86,16 +51,31 @@ public class FlagInventory extends Inventory {
         return new CustomItem("&c" + key.getName(), Arrays.asList("&7", "&7Value: &cdisabled", "&7", "&7Click to &aallow &7flag"), XMaterial.RED_WOOL.parseItem(), false, (short) 0, 1).complete();
     }
 
-    @Override
-    public HInventory getInventory(String regionName, Player player) {
-        return inventory;
-    }
-
-    @Override
     public void open(Player player, String regionName) {
-        this.regionName = regionName;
-        createInventory();
-        getInventory(regionName, player).open(player);
+        final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setId("flaginv").setTitle(ChatColor.GRAY + "Flag Management").create();
+        Pagination pagination = inventory.getPagination();
+        plugin.getInventoryManager().setupInventory(inventory, pagination);
+        for (StateFlag key : allFlags) {
+            ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
+            final boolean equals = plugin.getWorldGuard().getEnabledFlags(region).contains(key);
+            final ItemStack item = equals ? getEnabledItem(key) : getDisabledItem(key);
+
+            final ClickableItem clickableItem = ClickableItem.of(item, flag -> {
+                final StateFlag flagByName = plugin.getWorldGuard().getFlagByName(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
+                if (equals) denyFlag(region, flagByName, inventory, key, flag);
+                else allowFlag(inventory, key, region, flag, flagByName);
+                new FlagInventory(plugin, inventory.getPagination().getPage()).open(player, regionName);
+            });
+
+
+            clickableItemList.add(clickableItem);
+        }
+
+
+        pagination.setItems(clickableItemList);
+        plugin.getInventoryManager().setupPageButtons(inventory, pagination);
+        if (page != 0) pagination.setPage(page);
+        inventory.open(player);
 
     }
 }

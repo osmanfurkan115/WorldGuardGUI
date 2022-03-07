@@ -16,28 +16,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class ParentInventory extends Inventory {
+public class ParentInventory {
     private final WorldGuardGUIPlugin plugin;
-    private final String regionName;
-    private HInventory inventory;
     private final List<ClickableItem> clickableItemList = new ArrayList<>();
     private int page;
-    private final Player player;
 
 
-    public ParentInventory(WorldGuardGUIPlugin plugin, String regionName, Player player) {
+    public ParentInventory(WorldGuardGUIPlugin plugin) {
         this.plugin = plugin;
-        this.regionName = regionName;
-        this.player = player;
     }
 
-    public ParentInventory(WorldGuardGUIPlugin plugin, String regionName, int page, Player player) {
-        this(plugin, regionName, player);
+    public ParentInventory(WorldGuardGUIPlugin plugin, int page) {
+        this(plugin);
         this.page = page;
     }
 
-    @Override
-    void createInventory() {
+    public void open(Player player, String regionName) {
         final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setTitle(ChatColor.GRAY + "Parent Management").create();
         Pagination pagination = inventory.getPagination();
         plugin.getInventoryManager().setupInventory(inventory, pagination);
@@ -60,7 +54,7 @@ public class ParentInventory extends Inventory {
                     if(active) inventory.getInventory().setItem(event.getSlot(), disabledItem);
                     else inventory.getInventory().setItem(event.getSlot(), enabledItem);
 
-                    new ParentInventory(plugin, regionName, inventory.getPagination().getPage(), player).open(player,regionName);
+                    new ParentInventory(plugin, inventory.getPagination().getPage()).open(player,regionName);
 
                 });
                 clickableItemList.add(clickableItem);
@@ -71,17 +65,6 @@ public class ParentInventory extends Inventory {
         pagination.setItems(clickableItemList);
         plugin.getInventoryManager().setupPageButtons(inventory, pagination);
         if(page != 0)  pagination.setPage(page);
-        this.inventory = inventory;
-    }
-
-    @Override
-    public HInventory getInventory(String regionName, Player player) {
-        return inventory;
-    }
-
-    @Override
-    public void open(Player player, String regionName) {
-        createInventory();
-        getInventory(regionName, player).open(player);
+        inventory.open(player);
     }
 }

@@ -5,8 +5,8 @@ import lombok.Getter;
 import me.heymrau.wg6.WorldGuard6Hook;
 import me.heymrau.wg7.WorldGuard7Hook;
 import me.heymrau.worldguardguiplugin.commands.WGGuiCommand;
-import me.heymrau.worldguardguiplugin.inventories.Inventory;
 import me.heymrau.worldguardguiplugin.inventories.MainInventory;
+import me.heymrau.worldguardguiplugin.managers.ConversationManager;
 import me.heymrau.worldguardguiplugin.managers.InventoryManager;
 import me.heymrau.worldguardguiplugin.managers.ParticleManager;
 import me.heymrau.worldguardguiplugin.managers.TemplateManager;
@@ -20,8 +20,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class WorldGuardGUIPlugin extends JavaPlugin {
 
     private InventoryAPI inventoryAPI;
-    private Inventory mainInventory;
+    private MainInventory mainInventory;
     private WorldGuardService worldGuard;
+    private ConversationManager conversationManager;
     private TemplateManager templateManager;
     private InventoryManager inventoryManager;
     private ParticleManager particleManager;
@@ -41,6 +42,7 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
         templateManager.initializeTemplates();
 
         particleManager = new ParticleManager(this);
+        conversationManager = new ConversationManager(this);
 
         getCommand("wggui").setExecutor(new WGGuiCommand(this));
 
