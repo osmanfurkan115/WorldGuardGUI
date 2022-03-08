@@ -54,7 +54,7 @@ public class FlagInventory {
     public void open(Player player, String regionName) {
         final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setId("flaginv").setTitle(ChatColor.GRAY + "Flag Management").create();
         Pagination pagination = inventory.getPagination();
-        plugin.getInventoryManager().setupInventory(inventory, pagination);
+        plugin.getInventoryManager().setupPagination(inventory, pagination);
         for (StateFlag key : allFlags) {
             ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
             final boolean equals = plugin.getWorldGuard().getEnabledFlags(region).contains(key);

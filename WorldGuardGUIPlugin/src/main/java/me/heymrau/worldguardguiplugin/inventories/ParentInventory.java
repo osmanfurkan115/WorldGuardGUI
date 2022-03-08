@@ -34,7 +34,7 @@ public class ParentInventory {
     public void open(Player player, String regionName) {
         final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setTitle(ChatColor.GRAY + "Parent Management").create();
         Pagination pagination = inventory.getPagination();
-        plugin.getInventoryManager().setupInventory(inventory, pagination);
+        plugin.getInventoryManager().setupPagination(inventory, pagination);
         final Map<String, ProtectedRegion> regionsByWorld = plugin.getWorldGuard().getRegionsByWorld(player.getWorld().getName());
 
         for(Map.Entry<String, ProtectedRegion> regions: regionsByWorld.entrySet()) {
