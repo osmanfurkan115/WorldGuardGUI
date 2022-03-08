@@ -23,5 +23,4 @@ public interface WorldGuardService {
     Set<String> getBlockedCommands(ProtectedRegion region);
     void addBlockedCommand(ProtectedRegion region, String command);
     void removeBlockedCommand(ProtectedRegion region, String command);
-
 }
