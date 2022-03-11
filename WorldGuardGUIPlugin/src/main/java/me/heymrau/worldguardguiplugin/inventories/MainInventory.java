@@ -57,11 +57,11 @@ public class MainInventory {
 
         inventory.setItem(23, ClickableItem.of(blockedCommands, event -> new CommandInventory(plugin).open(player, regionName)));
 
-        inventory.setItem(40, ClickableItem.of(new CustomItem("&cDelete region " + regionName, null, Material.BARRIER, false, (short) 0, 1).complete(), item -> {
+        inventory.setItem(40, ClickableItem.of(new CustomItem("&cDelete region " + regionName, null, Material.BARRIER, false, (short) 0, 1).complete(), item ->
+                new ConfirmationInventory(plugin).open(player, (confirmationPlayer) -> {
             plugin.getWorldGuard().remove(regionName);
-            player.closeInventory();
-            player.sendMessage(ChatColor.GREEN + "Region is deleted successfully");
-        }));
+            confirmationPlayer.sendMessage(ChatColor.GREEN + "Region is deleted successfully");
+        })));
         return inventory;
     }
 

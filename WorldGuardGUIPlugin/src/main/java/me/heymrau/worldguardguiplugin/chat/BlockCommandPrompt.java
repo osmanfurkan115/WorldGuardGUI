@@ -8,7 +8,7 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 
 @RequiredArgsConstructor
-public class BlockedCommandPrompt extends StringPrompt {
+public class BlockCommandPrompt extends StringPrompt {
     private final WorldGuardService worldGuardService;
 
     @Override
