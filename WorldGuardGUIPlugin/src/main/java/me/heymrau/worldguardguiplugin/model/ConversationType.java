@@ -1,8 +1,8 @@
 package me.heymrau.worldguardguiplugin.model;
 
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
-import me.heymrau.worldguardguiplugin.chat.BlockCommandPrompt;
-import me.heymrau.worldguardguiplugin.chat.RegionNamePrompt;
+import me.heymrau.worldguardguiplugin.prompt.BlockCommandPrompt;
+import me.heymrau.worldguardguiplugin.prompt.RegionNamePrompt;
 import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.plugin.java.JavaPlugin;
