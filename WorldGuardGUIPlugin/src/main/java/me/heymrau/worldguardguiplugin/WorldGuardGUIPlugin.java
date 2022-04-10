@@ -15,11 +15,8 @@ import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-
 @Getter
 public final class WorldGuardGUIPlugin extends JavaPlugin {
-
     private WorldGuardService worldGuard;
     private ConversationManager conversationManager;
     private TemplateManager templateManager;
@@ -29,8 +26,6 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        templates.createFile();
-
         String version = Bukkit.getPluginManager().getPlugin("WorldGuard").getDescription().getVersion();
         worldGuard = version.startsWith("6") ? new WorldGuard6Hook() : new WorldGuard7Hook();
 

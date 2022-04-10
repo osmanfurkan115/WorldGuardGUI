@@ -16,6 +16,8 @@ public class Yaml extends YamlConfiguration {
     public Yaml(JavaPlugin plugin, File file) {
         this.plugin = plugin;
         this.file = file;
+
+        createFile();
     }
 
     public void createFile() {
