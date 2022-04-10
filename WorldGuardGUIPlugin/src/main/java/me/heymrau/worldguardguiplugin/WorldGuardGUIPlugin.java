@@ -1,6 +1,5 @@
 package me.heymrau.worldguardguiplugin;
 
-import com.hakan.inventoryapi.InventoryAPI;
 import lombok.Getter;
 import me.heymrau.wg6.WorldGuard6Hook;
 import me.heymrau.wg7.WorldGuard7Hook;
@@ -16,26 +15,23 @@ import me.heymrau.worldguardhook.WorldGuardService;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 @Getter
 public final class WorldGuardGUIPlugin extends JavaPlugin {
 
-    private InventoryAPI inventoryAPI;
-    private MainInventory mainInventory;
     private WorldGuardService worldGuard;
     private ConversationManager conversationManager;
     private TemplateManager templateManager;
     private InventoryManager inventoryManager;
     private ParticleManager particleManager;
-    private Yaml templates;
+    @Getter(lazy = true) private final Yaml templates = new Yaml(this, new File(getDataFolder(), "templates.yml"));
 
     @Override
     public void onEnable() {
-        templates = new Yaml(getDataFolder() + "/templates.yml", "templates.yml");
-
-        inventoryAPI = InventoryAPI.getInstance(this);
         inventoryManager = new InventoryManager();
-        mainInventory = new MainInventory(this);
-        final String version = Bukkit.getPluginManager().getPlugin("WorldGuard").getDescription().getVersion();
+
+        String version = Bukkit.getPluginManager().getPlugin("WorldGuard").getDescription().getVersion();
         worldGuard = version.startsWith("6") ? new WorldGuard6Hook() : new WorldGuard7Hook();
 
         templateManager = new TemplateManager(this);

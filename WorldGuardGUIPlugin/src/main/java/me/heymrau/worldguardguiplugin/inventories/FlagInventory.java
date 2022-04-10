@@ -1,46 +1,57 @@
 package me.heymrau.worldguardguiplugin.inventories;
 
-import com.hakan.inventoryapi.inventory.ClickableItem;
-import com.hakan.inventoryapi.inventory.HInventory;
-import com.hakan.inventoryapi.inventory.Pagination;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.PaginatedGui;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
+import me.heymrau.worldguardguiplugin.utils.Utils;
 import me.heymrau.worldguardguiplugin.utils.XMaterial;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FlagInventory {
 
     private final WorldGuardGUIPlugin plugin;
-    private final List<ClickableItem> clickableItemList = new ArrayList<>();
     private final Set<StateFlag> allFlags;
-    private int page;
 
     public FlagInventory(WorldGuardGUIPlugin plugin) {
         this.plugin = plugin;
         allFlags = new HashSet<>(plugin.getWorldGuard().getAllFlags());
     }
 
-    public FlagInventory(WorldGuardGUIPlugin plugin, int page) {
-        this(plugin);
-        this.page = page;
+    public void open(Player player, ProtectedRegion region) {
+        PaginatedGui gui = Gui.paginated().rows(5).pageSize(36).title(Utils.colored("&7Flag Management")).create();
+        for (StateFlag key : allFlags) {
+            boolean equals = plugin.getWorldGuard().getEnabledFlags(region).contains(key);
+            ItemStack item = equals ? getEnabledItem(key) : getDisabledItem(key);
+
+            gui.addItem(ItemBuilder.from(item).asGuiItem(event -> {
+                if (equals) denyFlag(gui, key, region, event);
+                else allowFlag(gui, key, region, event);
+                gui.update();
+            }));
+        }
+        plugin.getInventoryManager().setupPageButtons(gui);
+        gui.open(player);
     }
 
-    private void allowFlag(HInventory inventory, StateFlag key, ProtectedRegion region, InventoryClickEvent flag, StateFlag flagByName) {
-        plugin.getWorldGuard().allowFlag(region, flagByName);
-        inventory.getInventory().setItem(flag.getSlot(), getEnabledItem(key));
+    private void allowFlag(PaginatedGui gui, StateFlag flag, ProtectedRegion region, InventoryClickEvent event) {
+        plugin.getWorldGuard().allowFlag(region, flag);
+        gui.setItem(event.getSlot(), ItemBuilder.from(getEnabledItem(flag)).asGuiItem());
     }
 
-    private void denyFlag(ProtectedRegion region, StateFlag flagByName, HInventory inventory, StateFlag key, InventoryClickEvent flag) {
-        plugin.getWorldGuard().denyFlag(region, flagByName);
-        inventory.getInventory().setItem(flag.getSlot(), getDisabledItem(key));
+    private void denyFlag(PaginatedGui gui, StateFlag flag, ProtectedRegion region, InventoryClickEvent event) {
+        plugin.getWorldGuard().denyFlag(region, flag);
+        gui.setItem(event.getSlot(), ItemBuilder.from(getEnabledItem(flag)).asGuiItem());
     }
 
     private ItemStack getEnabledItem(Flag<?> key) {
@@ -49,34 +60,6 @@ public class FlagInventory {
 
     private ItemStack getDisabledItem(Flag<?> key) {
         return new CustomItem("&c" + key.getName(), Arrays.asList("&7", "&7Value: &cdisabled", "&7", "&7Click to &aallow &7flag"), XMaterial.RED_WOOL.parseItem(), false, (short) 0, 1).complete();
-    }
-
-    public void open(Player player, String regionName) {
-        final HInventory inventory = plugin.getInventoryAPI().getInventoryCreator().setSize(5).setId("flaginv").setTitle(ChatColor.GRAY + "Flag Management").create();
-        Pagination pagination = inventory.getPagination();
-        plugin.getInventoryManager().setupPagination(inventory, pagination);
-        for (StateFlag key : allFlags) {
-            ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
-            final boolean equals = plugin.getWorldGuard().getEnabledFlags(region).contains(key);
-            final ItemStack item = equals ? getEnabledItem(key) : getDisabledItem(key);
-
-            final ClickableItem clickableItem = ClickableItem.of(item, flag -> {
-                final StateFlag flagByName = plugin.getWorldGuard().getFlagByName(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
-                if (equals) denyFlag(region, flagByName, inventory, key, flag);
-                else allowFlag(inventory, key, region, flag, flagByName);
-                new FlagInventory(plugin, inventory.getPagination().getPage()).open(player, regionName);
-            });
-
-
-            clickableItemList.add(clickableItem);
-        }
-
-
-        pagination.setItems(clickableItemList);
-        plugin.getInventoryManager().setupPageButtons(inventory, pagination);
-        if (page != 0) pagination.setPage(page);
-        inventory.open(player);
-
     }
 }
 

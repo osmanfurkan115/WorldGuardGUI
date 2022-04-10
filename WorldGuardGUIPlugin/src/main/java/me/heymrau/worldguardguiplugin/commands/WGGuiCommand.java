@@ -1,6 +1,7 @@
 package me.heymrau.worldguardguiplugin.commands;
 
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
+import me.heymrau.worldguardguiplugin.inventories.MainInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,15 +19,16 @@ public class WGGuiCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player) || !sender.hasPermission("worldguardgui.admin")) return true;
         Player player = (Player) sender;
-        if (args.length == 1) {
-            if (plugin.getWorldGuard().getRegionByName(args[0]) != null) {
-                plugin.getMainInventory().open(player, args[0]);
-            } else {
-                player.sendMessage(colored("&cCouldn't find a region named " + args[0]));
-            }
-        } else {
-            player.sendMessage(colored("&cUsage: &a/wggui <region>"));
+        if (args.length != 1) {
+            player.sendMessage(colored("&cUsage: /wggui <region>"));
+            return true;
         }
+        String region = args[0];
+        if (plugin.getWorldGuard().getRegionByName(region) == null) {
+            player.sendMessage(colored("&cRegion not found"));
+            return true;
+        }
+        new MainInventory(plugin).open(player, region);
         return true;
     }
 

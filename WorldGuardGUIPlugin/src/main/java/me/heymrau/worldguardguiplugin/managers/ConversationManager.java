@@ -35,8 +35,7 @@ public class ConversationManager {
     }
 
     private ConversationFactory getConversationFactory(Prompt prompt) {
-        return new ConversationFactory(plugin)
-                .withLocalEcho(false)
+        return new ConversationFactory(plugin).withLocalEcho(false)
                 .withFirstPrompt(prompt)
                 .withModality(true)
                 .withTimeout(30)
