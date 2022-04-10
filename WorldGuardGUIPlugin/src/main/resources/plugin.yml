@@ -8,7 +8,7 @@ depend:
   - WorldEdit
 commands:
   wggui:
-    permission: worldguardgui.admin
+    permission: worldguardgui.gui
     usage: /wggui <region>
     aliases:
       - worldguardgui

@@ -25,7 +25,12 @@ public class ParentInventory {
     }
 
     public void open(Player player, ProtectedRegion region) {
-        PaginatedGui gui = Gui.paginated().rows(5).pageSize(36).title(Utils.colored("&7Parent Management")).create();
+        PaginatedGui gui = Gui.paginated()
+                .rows(5)
+                .pageSize(36)
+                .title(Utils.colored("&7Parent Management"))
+                .disableAllInteractions()
+                .create();
         Map<String, ProtectedRegion> regionsByWorld = plugin.getWorldGuard()
                 .getRegionsByWorld(player.getWorld().getName());
         regionsByWorld.forEach((key, value) -> {
@@ -45,7 +50,7 @@ public class ParentInventory {
                     if (active) gui.setItem(event.getSlot(), ItemBuilder.from(disabledItem).asGuiItem());
                     else gui.setItem(event.getSlot(), ItemBuilder.from(enabledItem).asGuiItem());
 
-                    gui.update();
+                    new ParentInventory(plugin).open(player, region);
                 });
 
                 gui.addItem(guiItem);

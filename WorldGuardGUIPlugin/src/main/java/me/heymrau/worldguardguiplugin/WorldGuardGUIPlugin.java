@@ -25,11 +25,11 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
     private TemplateManager templateManager;
     private InventoryManager inventoryManager;
     private ParticleManager particleManager;
-    private final Yaml templates = new Yaml(this, new File(getDataFolder(), "templates.yml"));
+    private final Yaml templates = new Yaml(this, "templates.yml");
 
     @Override
     public void onEnable() {
-        inventoryManager = new InventoryManager();
+        templates.createFile();
 
         String version = Bukkit.getPluginManager().getPlugin("WorldGuard").getDescription().getVersion();
         worldGuard = version.startsWith("6") ? new WorldGuard6Hook() : new WorldGuard7Hook();
@@ -39,6 +39,7 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
 
         particleManager = new ParticleManager(this);
         conversationManager = new ConversationManager(this);
+        inventoryManager = new InventoryManager();
 
         getCommand("wggui").setExecutor(new WGGuiCommand(this));
 

@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 public class ConfirmationInventory {
 
     public void open(Player player, Consumer<Player> onConfirm) {
-        Gui gui = Gui.gui().rows(3).title(Utils.colored("&cConfirmation")).create();
+        Gui gui = Gui.gui().rows(3).title(Utils.colored("&cConfirmation")).disableAllInteractions().create();
 
         gui.setItem(11, ItemBuilder.from(XMaterial.GREEN_WOOL.parseItem())
                 .name(Utils.colored("&aConfirm"))

@@ -22,8 +22,13 @@ public class MainInventory {
     }
 
     public void open(Player player, String regionName) {
-        Gui gui = Gui.gui().rows(5).title(Utils.colored("WorldGuard GUI")).create();
+        Gui gui = Gui.gui().rows(5).title(Utils.colored("WorldGuard GUI")).disableAllInteractions().create();
         ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
+
+        if (!region.getOwners().contains(player.getUniqueId()) && !player.hasPermission("worldguardgui.admin")) {
+            player.sendMessage(ChatColor.RED + "You don't have permission to use this GUI!");
+            return;
+        }
 
         GuiItem flagItem = ItemBuilder.from(XMaterial.GRASS_BLOCK.parseMaterial())
                 .name(Utils.colored("&aManage region flags"))

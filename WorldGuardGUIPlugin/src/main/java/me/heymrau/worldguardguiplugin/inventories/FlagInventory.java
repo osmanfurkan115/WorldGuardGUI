@@ -18,18 +18,26 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FlagInventory {
+public class FlagInventory extends Inventory {
 
     private final WorldGuardGUIPlugin plugin;
     private final Set<StateFlag> allFlags;
 
     public FlagInventory(WorldGuardGUIPlugin plugin) {
+        super("worldguardgui.flag");
         this.plugin = plugin;
         allFlags = new HashSet<>(plugin.getWorldGuard().getAllFlags());
     }
 
+    @Override
     public void open(Player player, ProtectedRegion region) {
-        PaginatedGui gui = Gui.paginated().rows(5).pageSize(36).title(Utils.colored("&7Flag Management")).create();
+        if (!checkPermission(player)) return;
+        PaginatedGui gui = Gui.paginated()
+                .rows(5)
+                .pageSize(36)
+                .title(Utils.colored("&7Flag Management"))
+                .disableAllInteractions()
+                .create();
         for (StateFlag key : allFlags) {
             boolean equals = plugin.getWorldGuard().getEnabledFlags(region).contains(key);
             ItemStack item = equals ? getEnabledItem(key) : getDisabledItem(key);
@@ -37,7 +45,7 @@ public class FlagInventory {
             gui.addItem(ItemBuilder.from(item).asGuiItem(event -> {
                 if (equals) denyFlag(gui, key, region, event);
                 else allowFlag(gui, key, region, event);
-                gui.update();
+                new FlagInventory(plugin).open(player, region);
             }));
         }
         plugin.getInventoryManager().setupPageButtons(gui);

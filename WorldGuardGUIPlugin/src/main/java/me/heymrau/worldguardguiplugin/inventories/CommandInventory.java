@@ -20,7 +20,7 @@ public class CommandInventory {
     }
 
     public void open(Player player, ProtectedRegion region) {
-        Gui gui = Gui.gui().rows(5).title(Utils.colored("&7Blocked Commands")).create();
+        Gui gui = Gui.gui().rows(5).title(Utils.colored("&7Blocked Commands")).disableAllInteractions().create();
 
         int i = 0;
         for (String command : plugin.getWorldGuard().getBlockedCommands(region)) {

@@ -17,7 +17,7 @@ public class WGGuiCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player) || !sender.hasPermission("worldguardgui.admin")) return true;
+        if (!(sender instanceof Player) || !sender.hasPermission("worldguardgui.gui")) return true;
         Player player = (Player) sender;
         if (args.length != 1) {
             player.sendMessage(colored("&cUsage: /wggui <region>"));
