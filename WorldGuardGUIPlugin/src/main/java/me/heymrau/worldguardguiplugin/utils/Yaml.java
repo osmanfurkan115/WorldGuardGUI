@@ -26,7 +26,7 @@ public class Yaml extends YamlConfiguration {
     }
 
     public void reload() {
-        if(!exists()) createFile();
+        createFile();
         try {
             load(file);
         } catch (Exception e) {

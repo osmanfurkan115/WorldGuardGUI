@@ -25,7 +25,7 @@ public final class WorldGuardGUIPlugin extends JavaPlugin {
     private TemplateManager templateManager;
     private InventoryManager inventoryManager;
     private ParticleManager particleManager;
-    @Getter(lazy = true) private final Yaml templates = new Yaml(this, new File(getDataFolder(), "templates.yml"));
+    private final Yaml templates = new Yaml(this, new File(getDataFolder(), "templates.yml"));
 
     @Override
     public void onEnable() {
