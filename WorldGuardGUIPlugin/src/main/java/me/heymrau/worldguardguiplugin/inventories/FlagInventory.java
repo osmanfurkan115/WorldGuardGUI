@@ -7,6 +7,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
+import me.heymrau.worldguardguiplugin.inventories.permission.InventoryPermission;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import me.heymrau.worldguardguiplugin.utils.Utils;
 import me.heymrau.worldguardguiplugin.utils.XMaterial;
@@ -24,7 +25,7 @@ public class FlagInventory extends Inventory {
     private final Set<StateFlag> allFlags;
 
     public FlagInventory(WorldGuardGUIPlugin plugin) {
-        super("worldguardgui.flag");
+        super(InventoryPermission.FLAG);
         this.plugin = plugin;
         allFlags = new HashSet<>(plugin.getWorldGuard().getAllFlags());
     }

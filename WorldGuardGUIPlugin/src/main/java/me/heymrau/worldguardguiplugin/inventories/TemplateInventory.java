@@ -7,6 +7,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
+import me.heymrau.worldguardguiplugin.inventories.permission.InventoryPermission;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import me.heymrau.worldguardguiplugin.model.Template;
 import me.heymrau.worldguardguiplugin.utils.Utils;
@@ -23,7 +24,7 @@ public class TemplateInventory extends Inventory {
     private final WorldGuardGUIPlugin plugin;
 
     public TemplateInventory(WorldGuardGUIPlugin plugin) {
-        super("worldguardgui.template");
+        super(InventoryPermission.TEMPLATE);
         this.plugin = plugin;
     }
 
