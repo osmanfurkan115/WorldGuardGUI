@@ -1,2 +1,2 @@
 # WorldGuardGUI
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/81aed3f688aa4863a536aad79edc9c9a)](https://app.codacy.com/gh/osmanfurkan115/WorldGuardGUI?utm_source=github.com&utm_medium=referral&utm_content=osmanfurkan115/WorldGuardGUI&utm_campaign=Badge_Grade_Settings)
+[![CodeFactor](https://www.codefactor.io/repository/github/osmanfurkan115/worldguardgui/badge)](https://www.codefactor.io/repository/github/osmanfurkan115/worldguardgui)

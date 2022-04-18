@@ -1,27 +1,20 @@
 package me.heymrau.worldguardguiplugin.managers;
 
-import com.hakan.inventoryapi.inventory.ClickableItem;
-import com.hakan.inventoryapi.inventory.HInventory;
-import com.hakan.inventoryapi.inventory.Pagination;
-import me.heymrau.worldguardguiplugin.model.CustomItem;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.PaginatedGui;
+import me.heymrau.worldguardguiplugin.utils.Utils;
 import org.bukkit.Material;
 
-import java.util.Arrays;
-
 public class InventoryManager {
-    public void setupPageButtons(HInventory inventory, Pagination pagination) {
-        inventory.setItem(38, ClickableItem.of(new CustomItem("&6Previous Page", null,
-                Material.ARROW, false, (short) 0, 1).complete(), (event) -> pagination.previousPage()));
-
-        inventory.setItem(40, ClickableItem.of(new CustomItem("&cClose", null,
-                Material.BARRIER, false, (short) 0, 1).complete(), (event) -> event.getWhoClicked().closeInventory()));
-
-        inventory.setItem(42, ClickableItem.of(new CustomItem("&6Next Page", null,
-                Material.ARROW, false, (short) 0, 1).complete(), (event) -> pagination.nextPage()));
-    }
-
-    public void setupPagination(HInventory inventory, Pagination pagination) {
-        inventory.guiAir();
-        pagination.setItemSlots(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35));
+    public void setupPageButtons(PaginatedGui paginatedGui) {
+        paginatedGui.setItem(5, 3, ItemBuilder.from(Material.ARROW)
+                .name(Utils.colored("&6Previous Page"))
+                .asGuiItem(event -> paginatedGui.previous()));
+        paginatedGui.setItem(5, 5, ItemBuilder.from(Material.BARRIER)
+                .name(Utils.colored("&cClose"))
+                .asGuiItem(event1 -> paginatedGui.close(event1.getWhoClicked())));
+        paginatedGui.setItem(5, 7, ItemBuilder.from(Material.ARROW)
+                .name(Utils.colored("&6Next Page"))
+                .asGuiItem(event -> paginatedGui.next()));
     }
 }

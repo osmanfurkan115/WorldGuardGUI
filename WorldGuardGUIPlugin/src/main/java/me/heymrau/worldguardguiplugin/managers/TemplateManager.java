@@ -8,9 +8,7 @@ import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
 import me.heymrau.worldguardguiplugin.model.Template;
 import me.heymrau.worldguardguiplugin.utils.Yaml;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -18,18 +16,20 @@ public class TemplateManager {
     private final WorldGuardGUIPlugin plugin;
 
     @Getter
-    private final List<Template> templatesList = new ArrayList<>();
+    private final Set<Template> templatesList = new HashSet<>();
 
     public void addTemplate(Template template) {
-        final Yaml templates = plugin.getTemplates();
+        Yaml templates = plugin.getTemplates();
 
         templates.set("templates." + template.getName() + ".allowed-flags", template.getEnabledFlags().stream().map(Flag::getName).collect(Collectors.toList()));
         templates.set("templates." + template.getName() + ".denied-flags", template.getDeniedFlags().stream().map(Flag::getName).collect(Collectors.toList()));
         templates.save();
 
-        final Optional<Template> first = templatesList.stream().filter(template1 -> template1.getName().equals(template.getName())).findFirst();
-        if (first.isPresent()) templatesList.set(templatesList.indexOf(first.get()), template);
-        else templatesList.add(template);
+        Optional<Template> optionalTemplate = templatesList.stream()
+                .filter(otherTemplate -> otherTemplate.getName().equalsIgnoreCase(template.getName()))
+                .findFirst();
+        optionalTemplate.ifPresent(templatesList::remove);
+        templatesList.add(template);
     }
 
     public void initializeTemplates() {

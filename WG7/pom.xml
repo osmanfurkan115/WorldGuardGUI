@@ -71,7 +71,7 @@
     <dependencies>
         <dependency>
             <groupId>me.heymrau</groupId>
-            <artifactId>WorldguardHook</artifactId>
+            <artifactId>WorldGuardHook</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
