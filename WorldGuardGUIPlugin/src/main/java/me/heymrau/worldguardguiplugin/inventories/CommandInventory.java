@@ -5,6 +5,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
+import me.heymrau.worldguardguiplugin.inventories.permission.InventoryPermission;
 import me.heymrau.worldguardguiplugin.utils.Utils;
 import me.heymrau.worldguardguiplugin.utils.XMaterial;
 import net.kyori.adventure.text.Component;
@@ -12,10 +13,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class CommandInventory {
+public class CommandInventory extends Inventory {
     private final WorldGuardGUIPlugin plugin;
 
     public CommandInventory(WorldGuardGUIPlugin plugin) {
+        super(InventoryPermission.COMMAND);
         this.plugin = plugin;
     }
 

@@ -1,5 +1,6 @@
 package me.heymrau.worldguardguiplugin.commands;
 
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
 import me.heymrau.worldguardguiplugin.inventories.MainInventory;
 import org.bukkit.ChatColor;
@@ -23,8 +24,9 @@ public class WGGuiCommand implements CommandExecutor {
             player.sendMessage(colored("&cUsage: /wggui <region>"));
             return true;
         }
-        String region = args[0];
-        if (plugin.getWorldGuard().getRegionByName(region) == null) {
+        String regionName = args[0];
+        ProtectedRegion region = plugin.getWorldGuard().getRegionByName(regionName);
+        if (region == null) {
             player.sendMessage(colored("&cRegion not found"));
             return true;
         }

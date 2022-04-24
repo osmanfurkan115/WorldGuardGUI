@@ -1,8 +1,11 @@
 package me.heymrau.worldguardguiplugin.inventories.permission;
 
 public enum InventoryPermission {
+    COMMAND("command"),
     FLAG("flag"),
-    TEMPLATE("template");
+    PARENT("parent"),
+    TEMPLATE("template"),
+    OTHER("other");
 
     private static final String PREFIX = "worldguardgui.";
     private final String permission;

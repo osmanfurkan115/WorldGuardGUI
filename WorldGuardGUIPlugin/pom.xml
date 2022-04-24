@@ -7,12 +7,12 @@
     <parent>
         <artifactId>WorldGuardGUIParent</artifactId>
         <groupId>me.heymrau</groupId>
-        <version>1.0.0</version>
+        <version>1.1.1</version>
     </parent>
 
 
     <artifactId>WorldGuardGUI</artifactId>
-    <version>1.1.0</version>
+    <version>${parent.version}</version>
     <packaging>jar</packaging>
 
     <name>WorldGuardGUIPlugin</name>
@@ -90,17 +90,17 @@
         <dependency>
             <groupId>me.heymrau</groupId>
             <artifactId>WorldGuardHook</artifactId>
-            <version>1.0.0</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>me.heymrau</groupId>
             <artifactId>WG6</artifactId>
-            <version>1.0.0</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>me.heymrau</groupId>
             <artifactId>WG7</artifactId>
-            <version>1.0.0</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.triumphteam</groupId>

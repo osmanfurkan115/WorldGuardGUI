@@ -6,6 +6,7 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
+import me.heymrau.worldguardguiplugin.inventories.permission.InventoryPermission;
 import me.heymrau.worldguardguiplugin.model.CustomItem;
 import me.heymrau.worldguardguiplugin.utils.Utils;
 import me.heymrau.worldguardguiplugin.utils.XMaterial;
@@ -16,11 +17,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class ParentInventory {
+public class ParentInventory extends Inventory {
     private final WorldGuardGUIPlugin plugin;
 
 
     public ParentInventory(WorldGuardGUIPlugin plugin) {
+        super(InventoryPermission.PARENT);
         this.plugin = plugin;
     }
 
