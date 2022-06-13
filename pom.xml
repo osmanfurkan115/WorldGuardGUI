@@ -6,7 +6,7 @@
 
     <groupId>me.heymrau</groupId>
     <artifactId>WorldGuardGUIParent</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <packaging>pom</packaging>
     <modules>
         <module>WorldGuardGUIPlugin</module>
