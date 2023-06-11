@@ -29,9 +29,10 @@ public class MainInventory extends Inventory {
             return;
         }
 
-        Gui gui = Gui.gui().rows(5).title(Utils.colored("WorldGuard GUI")).disableAllInteractions().create();
-
         boolean isNotGlobal = !region.getId().equals(WorldGuardService.GLOBAL_REGION);
+        String globalMenuName = isNotGlobal ? "" : " &6(Global)";
+
+        Gui gui = Gui.gui().rows(5).title(Utils.colored("WorldGuard GUI" + globalMenuName)).disableAllInteractions().create();
 
         GuiItem flagItem = ItemBuilder.from(XMaterial.GRASS_BLOCK.parseMaterial())
                 .name(Utils.colored("&aManage region flags"))
