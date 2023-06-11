@@ -23,6 +23,7 @@ public class MainInventory extends Inventory {
     }
 
     public void open(Player player, ProtectedRegion region) {
+        // TODO: if is Global region, we should disable a bunch of things
         if (!region.getOwners().contains(player.getUniqueId()) && !player.hasPermission("worldguardgui.admin")) {
             player.sendMessage(ChatColor.RED + "You don't have permission to use this GUI!");
             return;

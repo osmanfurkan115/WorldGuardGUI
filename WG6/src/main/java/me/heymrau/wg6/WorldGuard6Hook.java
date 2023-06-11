@@ -1,10 +1,15 @@
 package me.heymrau.wg6;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.*;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardhook.WorldGuardLocation;
@@ -119,6 +124,26 @@ public class WorldGuard6Hook implements WorldGuardService {
         if(flag == null) return;
         flag.remove(command);
         region.setFlag(DefaultFlag.BLOCKED_CMDS, flag);
+    }
+
+    @Override
+    public Set<ProtectedRegion> getApplicableRegions(WorldGuardLocation location) {
+        RegionManager manager = WorldGuardPlugin.inst().getRegionManager(Bukkit.getWorld(location.getWorldName()));
+        ApplicableRegionSet applicableRegions = manager.getApplicableRegions(
+                new Vector(location.getX(), location.getY(), location.getZ())
+        );
+
+        ProtectedRegion globalRegion = manager.getRegion(GLOBAL_REGION);
+
+        if(globalRegion == null) {
+            globalRegion = new GlobalProtectedRegion(GLOBAL_REGION);
+            manager.addRegion(globalRegion);
+        }
+
+        ArrayList<ProtectedRegion> protectedRegions = Lists.newArrayList(applicableRegions);
+        protectedRegions.add(0, globalRegion);
+
+        return Sets.newLinkedHashSet(protectedRegions);
     }
 
     @Override

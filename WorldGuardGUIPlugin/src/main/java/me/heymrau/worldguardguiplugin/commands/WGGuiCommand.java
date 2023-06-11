@@ -3,6 +3,7 @@ package me.heymrau.worldguardguiplugin.commands;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.heymrau.worldguardguiplugin.WorldGuardGUIPlugin;
 import me.heymrau.worldguardguiplugin.inventories.MainInventory;
+import me.heymrau.worldguardguiplugin.inventories.RegionsOnTopInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +22,7 @@ public class WGGuiCommand implements CommandExecutor {
         if (!(sender instanceof Player) || !sender.hasPermission("worldguardgui.gui")) return true;
         Player player = (Player) sender;
         if (args.length != 1) {
-            player.sendMessage(colored("&cUsage: /wggui <region>"));
+            new RegionsOnTopInventory(plugin).open(player, null);
             return true;
         }
         String regionName = args[0];
