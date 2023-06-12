@@ -9,6 +9,7 @@ import me.heymrau.worldguardguiplugin.inventories.permission.InventoryPermission
 import me.heymrau.worldguardguiplugin.model.Template;
 import me.heymrau.worldguardguiplugin.utils.Utils;
 import me.heymrau.worldguardguiplugin.utils.XMaterial;
+import me.heymrau.worldguardhook.WorldGuardService;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,8 +29,10 @@ public class MainInventory extends Inventory {
             return;
         }
 
-        Gui gui = Gui.gui().rows(5).title(Utils.colored("WorldGuard GUI")).disableAllInteractions().create();
+        boolean isNotGlobal = !region.getId().equals(WorldGuardService.GLOBAL_REGION);
+        String globalMenuName = isNotGlobal ? "" : " &6(Global)";
 
+        Gui gui = Gui.gui().rows(5).title(Utils.colored("WorldGuard GUI" + globalMenuName)).disableAllInteractions().create();
 
         GuiItem flagItem = ItemBuilder.from(XMaterial.GRASS_BLOCK.parseMaterial())
                 .name(Utils.colored("&aManage region flags"))
@@ -79,13 +82,13 @@ public class MainInventory extends Inventory {
                 });
 
         gui.setItem(11, flagItem);
-        gui.setItem(12, parentItem);
+        if(isNotGlobal) gui.setItem(12, parentItem);
         gui.setItem(13, templateItem);
-        gui.setItem(14, borderItem);
-        gui.setItem(15, renameItem);
+        if(isNotGlobal) gui.setItem(14, borderItem);
+        if(isNotGlobal) gui.setItem(15, renameItem);
         gui.setItem(21, saveTemplateItem);
         gui.setItem(23, commandItem);
-        gui.setItem(40, deleteItem);
+        if(isNotGlobal) gui.setItem(40, deleteItem);
 
         gui.open(player);
     }

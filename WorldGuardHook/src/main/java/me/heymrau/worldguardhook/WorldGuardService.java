@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 public interface WorldGuardService {
+    public static final String GLOBAL_REGION = "__global__";
+
     void remove(String regionName);
     void allowFlag(ProtectedRegion region, StateFlag flag);
     void denyFlag(ProtectedRegion region, StateFlag flag);
@@ -23,4 +25,5 @@ public interface WorldGuardService {
     Set<String> getBlockedCommands(ProtectedRegion region);
     void addBlockedCommand(ProtectedRegion region, String command);
     void removeBlockedCommand(ProtectedRegion region, String command);
+    Set<ProtectedRegion> getApplicableRegions(WorldGuardLocation location);
 }

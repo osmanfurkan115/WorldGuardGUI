@@ -1,12 +1,17 @@
 package me.heymrau.wg7;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
@@ -155,5 +160,27 @@ public class WorldGuard7Hook implements WorldGuardService {
     public StateFlag getFlagByName(String flagName) {
         Flag<?> flag = WorldGuard.getInstance().getFlagRegistry().get(flagName);
         return flag instanceof StateFlag ? (StateFlag) flag : null;
+    }
+
+    @Override
+    public Set<ProtectedRegion> getApplicableRegions(WorldGuardLocation location) {
+        RegionManager manager =  WorldGuard.getInstance().getPlatform().getRegionContainer()
+                .get(BukkitAdapter.adapt(Bukkit.getWorld(location.getWorldName())));
+
+        ApplicableRegionSet applicableRegions = manager.getApplicableRegions(
+                BlockVector3.at(location.getX(), location.getY(), location.getZ())
+        );
+
+        ProtectedRegion globalRegion = manager.getRegion(GLOBAL_REGION);
+
+        if(globalRegion == null) {
+            globalRegion = new GlobalProtectedRegion(GLOBAL_REGION);
+            manager.addRegion(globalRegion);
+        }
+
+        ArrayList<ProtectedRegion> protectedRegions = Lists.newArrayList(applicableRegions);
+        protectedRegions.add(0, globalRegion);
+
+        return Sets.newLinkedHashSet(protectedRegions);
     }
 }
